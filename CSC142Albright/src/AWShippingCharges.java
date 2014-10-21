@@ -1,0 +1,34 @@
+/** 
+ * @author Anthony Wittemann
+ * Chapter 4 Program 6 Shipping Charges
+ * HW Due 2/18/14
+ */
+public class AWShippingCharges {
+	private float packageWeight; //weight in kilograms
+	
+	public AWShippingCharges(float w){
+		packageWeight = w;
+	}
+	
+	
+	public float getShippingCharges(int milesShipped){
+		float ratePer500Miles;
+		
+		if (packageWeight < 2.0){
+			ratePer500Miles = (float) 1.10;
+		}
+		else if (packageWeight < 6.0){
+			ratePer500Miles = (float) 2.20;
+		}
+		else if (packageWeight < 10.0){
+			ratePer500Miles = (float) 3.70;
+		}
+		else{ //packageWeight > 10 kg
+			ratePer500Miles = (float) 4.80;
+		}
+		
+		float shippingCharges = ratePer500Miles * (milesShipped / 500);
+		return shippingCharges;
+	}
+	
+}

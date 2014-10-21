@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
+		<item value="false" key="isRegEx"/>
+		<item value="dialPadPanel" key="selection"/>
+		<item value="false" key="casesensitive"/>
+		<item value="false" key="incremental"/>
+		<item value="true" key="wrap"/>
+		<item value="false" key="wholeword"/>
+		<list key="findhistory">
+			<item value="dialPadPanel"/>
+			<item value="table = 1;"/>
+			<item value="table"/>
+			<item value="horizontal"/>
+			<item value="yearLow"/>
+			<item value="Low"/>
+			<item value="setLayout"/>
+			<item value="mtblCalendar"/>
+		</list>
+		<list key="replacehistory">
+			<item value="phoneKeys"/>
+			<item value="vertical"/>
+			<item value="marketCapitalization;;"/>
+			<item value="marketCapitalization;"/>
+			<item value="marketCapitalization"/>
+			<item value="High"/>
+			<item value="y"/>
+			<item value="x"/>
+		</list>
+	</section>
+	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
+		<item value="263" key="DIALOG_WIDTH"/>
+		<item value="1|Lucida Grande|11.0|0|COCOA|1|LucidaGrande" key="DIALOG_FONT_NAME"/>
+		<item value="399" key="DIALOG_HEIGHT"/>
+		<item value="0" key="DIALOG_Y_ORIGIN"/>
+		<item value="1380" key="DIALOG_X_ORIGIN"/>
+	</section>
+</section>

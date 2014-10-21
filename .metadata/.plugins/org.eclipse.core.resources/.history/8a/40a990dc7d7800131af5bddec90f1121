@@ -1,0 +1,18 @@
+# Anthony Wittemann
+# 1/7/14
+# Chapter 13 Program 3 - Zelle
+
+
+def main():
+    usrInput = input('Enter a string to see if it is a palindrome: ')
+    if isPalindrome(userInput):
+        print('Your sentence is a palindrome.')
+    else:
+        print('Your sentence is not a palindrome.')
+    
+def isPalindrome(sent):
+    strippedSent = sent.strip(' .!?/,:;|\@#$%^&*()~`[]{}<>')
+    print(strippedSent)
+    lowerSent = strippedSent.lower()
+    
+main()

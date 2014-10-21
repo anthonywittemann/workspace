@@ -1,0 +1,17 @@
+# Anthony Wittemann
+# 1/7/14
+# Chapter 13 Program 4 - Zelle
+
+
+def main():
+    list1 = [1, 2, 3, 4, 5, 6, 7, 123, 432, 63546, 32589, -23901, 14891, 8219, 1289, 1902312094, -097865645678, 9]
+    theMax = findMax(list1[0], 0, list1)
+    print('The maximum value is ', theMax, sep='')
+    
+    
+def findMax(currentMax, currentMaxIndex, daList):    
+    
+    
+    
+    
+main()

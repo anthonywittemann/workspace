@@ -1,0 +1,21 @@
+/** 
+ * @author Anthony Wittemann
+ * Chapter 4 Program 10 Freezing and Boiling Points
+ * HW Due 2/18/14
+ */
+
+import javax.swing.JOptionPane;
+
+public class AWFPDriverCh4Pr10 {
+
+	public static void main(String[] args) {
+		AWFreezingNBoilingPts FnB_Pts = new AWFreezingNBoilingPts();
+		
+		int temp = Integer.parseInt(JOptionPane.showInputDialog("Enter the temperature in degrees Fahrenheit"));
+		
+		FnB_Pts.setFahrTemp(temp);
+		
+		
+	}
+
+}

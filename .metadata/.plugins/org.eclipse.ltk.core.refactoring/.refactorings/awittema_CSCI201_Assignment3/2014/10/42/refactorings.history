@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename type &apos;aw.MainFrame&apos; to &apos;Assignment3MainFrame&apos;&#x0A;- Original project: &apos;awittema_CSCI201_Assignment3&apos;&#x0A;- Original element: &apos;aw.MainFrame&apos;&#x0A;- Renamed element: &apos;aw.Assignment3MainFrame&apos;&#x0A;- Update references to refactored element&#x0A;- Update textual occurrences in comments and strings" description="Rename type &apos;MainFrame&apos;" flags="589830" id="org.eclipse.jdt.ui.rename.type" input="/src&lt;aw{MainFrame.java[MainFrame" matchStrategy="1" name="Assignment3MainFrame" qualified="false" references="true" similarDeclarations="false" stamp="1413589750954" textual="false" version="1.0"/>
+</session>

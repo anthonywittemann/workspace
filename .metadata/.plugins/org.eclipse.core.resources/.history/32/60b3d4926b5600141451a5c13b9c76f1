@@ -1,0 +1,7 @@
+package aw;
+
+public class ImageFrame extends JFrame{
+	public ImageFrame(){
+		
+	}
+}
