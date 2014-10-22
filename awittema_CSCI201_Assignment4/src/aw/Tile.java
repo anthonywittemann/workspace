@@ -3,12 +3,14 @@ package aw;
 public class Tile {
 	
 	private char type; //can be B (Blank), I, L, T, P (Plus)
-	private int[][] location; //in the 9x9 grid
+	private char row; //location in the 9x9 grid
+	private int column;
 	private int rotation; //from 0-360
 	
-	public Tile(char type, int[][] location, int rotation){
+	public Tile(char type, char row, int column, int rotation){
 		this.type = type;
-		this.location = location;
+		this.row = row;
+		this.column = column;
 		this.rotation = rotation;
 	}
 	
@@ -17,8 +19,12 @@ public class Tile {
 		this.type = nType;
 	}
 	
-	public void setLocation(int[][] nLocation){
-		this.location = nLocation;
+	public void setRow(char nR){
+		this.row = nR;
+	}
+	
+	public void setColumn(int nC){
+		this.column = nC;
 	}
 	
 	public void setRotation(int nRotation){
@@ -30,8 +36,12 @@ public class Tile {
 		return this.type;
 	}
 	
-	public int[][] getLocation(){
-		return this.location;
+	public char getRow(){
+		return this.row;
+	}
+	
+	public int getColumn(){
+		return this.column;
 	}
 	
 	public int getRotation(){

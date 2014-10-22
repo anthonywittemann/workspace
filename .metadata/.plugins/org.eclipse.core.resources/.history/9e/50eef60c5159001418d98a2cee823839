@@ -1,0 +1,21 @@
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+
+public class DataBaseMain {
+
+	public static void main(String[] args) {
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		try {
+			DriverManager.getConnection("jdbc:mysql://localhost/Schema1", "root", "oezPC@1B");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+}

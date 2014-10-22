@@ -1,2 +1,3 @@
+browsers=<?xml version\="1.0" encoding\="UTF-8"?>\n<web-browsers current\="0">\n<system/>\n<external location\="/Applications/Firefox.app" name\="Firefox"/>\n</web-browsers>
 eclipse.preferences.version=1
 internalWebBrowserHistory=http\://download.oracle.com/javase/6/docs/api/java/util/regex/Pattern.html|*|http\://download.oracle.com/javase/6/docs/api/java/util/Locale.html|*|http\://download.oracle.com/javase/6/docs/api/java/util/Formatter.html\#syntax|*|http\://developer.android.com/reference/android/app/FragmentTransaction.html\#add(int,%20android.app.Fragment,%20java.lang.String)|*|http\://developer.android.com/reference/android/app/FragmentTransaction.html|*|http\://developer.android.com/reference/android/net/Uri.html|*|
