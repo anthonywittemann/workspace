@@ -45,11 +45,10 @@ public class MainFrame extends JFrame{
 	private JPanel mainPanel;
 	private int xGridCenter = 300;
 	private int yGridCenter = 300;
-	//TODO make an ArrayList representing the tiles each containing a tile object with the type, location and rotation
 	private ArrayList<Tile> gridTiles = new ArrayList<Tile>();
 	private ArrayList<Car> cars = new ArrayList<Car>();
 
-	//TODO Part 5 - beginning to parse XML
+	//TODO Part 5 - beginning to parse XML: Currently, car objects being created but not tile objects
 
 	public MainFrame(){
 		//set up the window and the drawing panel
@@ -171,7 +170,7 @@ public class MainFrame extends JFrame{
 
 	public void parseCarsXML(){
 		try {
-			File carsXmlFile = new File("cars.xml");
+			File carsXmlFile = new File("cars.xml"); //TODO change this to whatever file is selected by user
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 			Document doc = dBuilder.parse(carsXmlFile);
@@ -181,62 +180,208 @@ public class MainFrame extends JFrame{
 			System.out.println("Root element: " + doc.getDocumentElement().getNodeName());
 			if (doc.hasChildNodes()) {
 
-				printNote(doc.getChildNodes());
+				printNote(doc.getChildNodes(), null, null, null, null);
 
 			}
+			for(Tile t: gridTiles){
+				System.out.println(t.toString());
+			}
+			System.out.println("\n\n\n");
+			for(Car c: cars){
+				System.out.println(c.toString());
+			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
 	//TODO instead of printNode, loadNodes into Tiles and Tiles into ArrayList, car and cars into ArrayList
-	private void printNote(NodeList nodeList) {
+	//includes variables from parent nodes that hold importants information for creating tile/car object
+	//TODO works creating car objects, but @ least one of the tile attributes is null & therefore not being added to gridTiles
+	private void printNote(NodeList nodeList, String pRow, String pAi, String pColor, String pSpeed) {
 
 		for (int count = 0; count < nodeList.getLength(); count++) {
 			Node tempNode = nodeList.item(count);
 
+			//create variables for data attributes to go into tile, car objects
+			//fill variables from higher nodes if called recursively
+			String row = null;
+			if(pRow != null){
+				row = pRow;
+			}
+			
+			String type = null;	
+			String column = null;
+			String rotation = null;
+			
+			String ai = null;
+			if(pAi != null){
+				ai = pAi;
+			}
+			String color = null;
+			if(pColor != null){
+				color = pColor;
+			}
+			String speed = null;
+			if(pSpeed != null){
+				speed = pSpeed;
+			}
+			
+			String xLoc = null;
+			String yLoc = null;
+			
 			// make sure it's element node.
 			if (tempNode.getNodeType() == Node.ELEMENT_NODE) {
 
 				// get node name
 				//Nodes can be grid, tiles, rows, car, location, roadway, cars
 				System.out.println("\nNode Name =" + tempNode.getNodeName() + " [OPEN]");
-				//			System.out.println("Node Value =" + tempNode.getTextContent()); //doesn't give me anything except whitespace
+				
+//				if(tempNode.getNodeName().equals("row")){
+//					row = tempNode.getNodeValue();
+//				}
 
 				if (tempNode.hasAttributes()) {
 
-					// get attributes names and values
+					// get attributes names
 					NamedNodeMap nodeMap = tempNode.getAttributes();
-
+					
+					//loop through all attributes and store values in variables to be used for car/tile object
 					for (int i = 0; i < nodeMap.getLength(); i++) {
-
 						Node node = nodeMap.item(i);
-						System.out.println("attr name : " + node.getNodeName());
-						//					System.out.println("attr value : " + node.getNodeValue());
-
+						String nodeName = node.getNodeName();
+						System.out.println("attr name : " + nodeName);
+						
+						if(nodeName.equals("label")){
+							row = node.getNodeValue();
+						}
+						
+						
+						if(nodeName.equals("Type")){
+							type = node.getNodeValue();
+						}
+						else if(nodeName.equals("degree")){
+							rotation = node.getNodeValue();
+						}
+						else if(nodeName.equals("column")){
+							column = node.getNodeValue();
+						}
+						
+						else if(nodeName.equals("ai")){
+							ai = node.getNodeValue();
+						}
+						else if(nodeName.equals("color")){
+							color = node.getNodeValue();
+						}
+						else if(nodeName.equals("speed")){
+							speed = node.getNodeValue();
+						}
+						
+						else if(nodeName.equals("x")){
+							xLoc = node.getNodeValue();
+						}
+						else if(nodeName.equals("y")){
+							yLoc = node.getNodeValue();
+						}
 					}
+					
+					
+					
 
 				}
 
 				if (tempNode.hasChildNodes()) {
 					System.out.println("*******************CHILD NODES********************");
 					// loop again if has child nodes
-					printNote(tempNode.getChildNodes());
+					printNote(tempNode.getChildNodes(), row, ai, color, speed);
 					System.out.println("\\\\\\\\\\\\\\\\\\CHILD NODES//////////////////////");
 
 				}
 
 				System.out.println("Node Name =" + tempNode.getNodeName() + " [CLOSE]");
-
+				//add new tile or car to arraylist
+				if(type != null && row != null && column != null && rotation != null){
+					gridTiles.add(new Tile(type, row, column, rotation));
+				}
+				else if(ai != null && color != null && speed != null && xLoc != null && yLoc != null){
+					cars.add(new Car(color, ai, speed, xLoc, yLoc));
+				}
 			}
 
 		}
+	}
+	
+	//returns the x coordinate of the top left corner of the tile
+	private int getXCor(int yCor){
+		if(yCor == 1){
+			return xGridCenter - 225;
+		}
+		else if(yCor == 2){
+			return xGridCenter - 175;
+		}
+		else if(yCor == 3){
+			return xGridCenter - 125;
+		}
+		else if(yCor == 4){
+			return xGridCenter - 75;
+		}
+		else if(yCor == 5){
+			return xGridCenter - 25;
+		}
+		else if(yCor == 6){
+			return xGridCenter + 25;
+		}
+		else if(yCor == 7){
+			return xGridCenter + 75;
+		}
+		else if(yCor == 8){
+			return xGridCenter + 125;
+		}
+		else if(yCor == 9){
+			return xGridCenter + 175;
+		}
+		return -1;
+	}
+	//returns the y coordinate of the top left corner of the tile
+	private int getYCor(char row){
+		if(row == 'A'){
+			return yGridCenter - 225;
+		}
+		else if(row == 'B'){
+			return yGridCenter - 175;
+		}
+		else if(row == 'C'){
+			return yGridCenter - 125;
+		}
+		else if(row == 'D'){
+			return yGridCenter - 75;
+		}
+		else if(row == 'E'){
+			return yGridCenter - 25;
+		}
+		else if(row == 'F'){
+			return yGridCenter + 25;
+		}
+		else if(row == 'G'){
+			return yGridCenter + 75;
+		}
+		else if(row == 'H'){
+			return yGridCenter + 125;
+		}
+		else if(row == 'I'){
+			return yGridCenter + 175;
+		}
+		return -1;
 	}
 
 	class DrawingPanel extends JPanel{
 		public void paintComponent(Graphics g){
 			super.paintComponent(g);
 			drawGrid(g);
+			testTiles(g);
+			drawTiles(g);
+			drawCars(g);
 		}
 
 		public void drawGrid(Graphics g){
@@ -263,6 +408,110 @@ public class MainFrame extends JFrame{
 			g.drawLine(xGridCenter + 125, yGridCenter - 225, xGridCenter + 125, yGridCenter + 225); //right-2 vertical line
 			g.drawLine(xGridCenter + 75, yGridCenter - 225, xGridCenter + 75, yGridCenter + 225); //right-3 vertical line
 			g.drawLine(xGridCenter + 25, yGridCenter - 225, xGridCenter + 25, yGridCenter + 225); //right-4 vertical line
+		}
+		
+		public void testTiles(Graphics g){
+			int xC = xGridCenter - 225;
+			int yC = yGridCenter - 225;
+//			int rot = t.getRotation();
+			
+			//draw the green rectangle for the tile
+			g.setColor(Color.GREEN);
+			g.fillRect(xC, yC, 50, 50);
+			
+			//draw the black rectangles based on rotation
+			g.setColor(Color.BLACK);
+//			else if(t.getType().equals("i")){			//I configuration I I I I I I I
+//				if(rot == 0 || rot == 180){
+//					g.fillRect(xC+12, yC, 25, 50);
+//					xC+=50; yC+=50;
+					//GOOD
+//				}
+//				else if(rot == 90 || rot == 270){
+//					g.fillRect(xC, yC+12, 50, 25);
+//					xC+=50; yC+=50;
+					//GOOD
+//				}
+//			}
+//			else if(t.getType().equals("l")){ 			//L configuration L L L L L L L 
+//				if(rot == 0){ 
+//					g.fillRect(xC+12, yC, 25, 32);
+//					g.fillRect(xC+37, yC+18, 12, 14);
+//					xC+=50; yC+=50;
+					//GOOD
+//				}
+//				else if(rot == 90){
+//					g.fillRect(xC, yC+12, 32, 25);
+//					g.fillRect(xC+18, yC, 14, 12);
+//					xC+=50; yC+=50;
+					//GOOD
+//				}
+//				else if(rot == 180){
+//					g.fillRect(xC+12, yC+18, 25, 32);
+//					g.fillRect(xC, yC+18, 12, 14);
+//					xC+=50; yC+=50;
+					//GOOD
+//				}
+//				else if(rot == 270){
+					//TODO finish L configuration for 270 rotation
+//				}
+		}
+		
+		//TODO part 6 draw the tiles and cars on the grid
+		public void drawTiles(Graphics g){
+			for(Tile t: gridTiles){
+				//get the location of the top left corner, rotation of the tile
+				int xC = getXCor(t.getColumn());
+				int yC = getYCor(t.getRow());
+				int rot = t.getRotation();
+				
+				//draw the green rectangle for the tile
+				g.setColor(Color.GREEN);
+				g.fillRect(xC, yC, 50, 50);
+				
+				//draw the black rectangles based on rotation
+				g.setColor(Color.BLACK);
+				if(t.getType().equals("blank")){ 
+					//draw a green square, rotation doesn't matter
+				}
+				else if(t.getType().equals("i")){			//I configuration I I I I I I I
+					if(rot == 0 || rot == 180){
+						g.fillRect(xC+12, yC, 25, 50);
+					}
+					else if(rot == 90 || rot == 270){
+						g.fillRect(xC, yC+12, 50, 25);
+					}
+				}
+				else if(t.getType().equals("l")){ 			//L configuration L L L L L L L 
+					if(rot == 0){
+						g.fillRect(xC+12, yC, 25, 32);
+						g.fillRect(xC+37, yC+18, 12, 14);
+					}
+					else if(rot == 90){
+						g.fillRect(xC, yC+12, 32, 25);
+						g.fillRect(xC+18, yC, 14, 12);
+					}
+					else if(rot == 180){
+						g.fillRect(xC+12, yC+18, 25, 32);
+						g.fillRect(xC, yC+18, 12, 14);
+					}
+					else if(rot == 270){
+						
+					}
+				}
+				else if(t.getType().equals("t")){			//T configuration T T T T T T T
+					//get the rotation and draw green square with two black rectangles
+				}
+				else if(t.getType().equals("+")){
+					//get the rotation and draw green square with two black rectangles
+					//TODO find out if rotation matters for cross on piazza
+				}
+			}
+			
+		}
+		
+		public void drawCars(Graphics g){
+			
 		}
 	}
 

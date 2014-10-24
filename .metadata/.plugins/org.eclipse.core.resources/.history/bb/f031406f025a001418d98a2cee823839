@@ -1,0 +1,15 @@
+package networking;
+
+import java.util.Scanner;
+
+public class ChatServer {
+	
+	
+	public static void main(String[] args){
+		Scanner scan  = new Scanner(System.in);
+		System.out.print("What port? ");
+		int port = scan.nextInt();
+		new ChatServer();
+	}
+
+}

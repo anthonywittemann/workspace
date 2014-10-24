@@ -2,20 +2,20 @@ package aw;
 
 public class Tile {
 	
-	private char type; //can be B (Blank), I, L, T, P (Plus)
+	private String type; //can be B (Blank), I, L, T, P (Plus)
 	private char row; //location in the 9x9 grid
 	private int column;
 	private int rotation; //from 0-360
 	
-	public Tile(char type, char row, int column, int rotation){
+	public Tile(String type, String row, String column, String rotation){
 		this.type = type;
-		this.row = row;
-		this.column = column;
-		this.rotation = rotation;
+		this.row = row.charAt(0);
+		this.column = Integer.parseInt(column);
+		this.rotation = Integer.parseInt(rotation);
 	}
 	
 	
-	public void setType(char nType){
+	public void setType(String nType){
 		this.type = nType;
 	}
 	
@@ -32,19 +32,23 @@ public class Tile {
 	}
 	
 	
-	public char getType(){
+	public String getType(){
 		return this.type;
 	}
-	
+	//row is the y coordinate
 	public char getRow(){
 		return this.row;
 	}
-	
+	//column is the x coordinate
 	public int getColumn(){
 		return this.column;
 	}
 	
 	public int getRotation(){
 		return this.rotation;
+	}
+	
+	public String toString(){
+		return "Type: " + type + "   Row: " + row + "   Column: " + column + "   Rotation: " + rotation;
 	}
 }

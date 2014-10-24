@@ -1,0 +1,21 @@
+package networking;
+
+import java.net.Socket;
+import java.util.Scanner;
+
+public class ChatClient {
+	
+	public ChatClient(String hostname, int port){
+		Socket s = new Socket(hostname, port);
+	}
+	
+	public static void main(String[] args){
+		Scanner scan = new Scanner(System.in);
+		System.out.print("What is teh name/IP of the server? ");
+		String hostName = scan.nextLine();
+		System.out.print("What is the port? ");
+		int port = scan.nextInt();
+		new ChatClient(hostName, port);
+	}
+
+}

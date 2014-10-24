@@ -1,0 +1,26 @@
+package networking;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.Socket;
+
+public class ChatThread extends Thread{
+	private Socket s;
+	
+	public ChatThread(Socket s){
+		this.s = s;
+		this.start();
+	}
+	
+	public void run(){
+		// a client has connected to our server
+		try {
+			BufferedReader br = new BufferedReader(new InputStreamReader(s.getInputStream()));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+}

@@ -17,17 +17,7 @@ public class DataBaseMain {
 			e.printStackTrace();
 		}
 		
-		Connection connection = null;
-		Statement s = null;
-		try {
-			connection = DriverManager.getConnection("jdbc:mysql://localhost/Schema1", "root", "oezPC@1B");
-//			connection = DriverManager.getConnection("jdbc:mysql://localhost/?user=root&password=rootpassword");
-//			s = connection.createStatement();
-//			int result = s.executeUpdate("CREATE DATABASE databasename");
-			//TODO SQLException: Access denied for user 'root'@'localhost' (using password: YES)
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		
 		
 		
 		//prompt user for first and last name and store in Strings
@@ -40,16 +30,20 @@ public class DataBaseMain {
 		
 		
 		/****** STEP 4 ******* STEP 4 ******* STEP 4 ******* STEP 4 ******* STEP 4 ******* STEP 4 ******* STEP 4 *******/
-		String sqlStatement = "INSERT INTO User(\"first_name\", \"last_name\") VALUES(" + firstName + "," + lastName + ")";
-		String sqlStatement2 = "INSERT INTO User(\"first_name\", \"last_name\") VALUES(?,?)";
+		String sqlStatement2 = "INSERT INTO User(first_name, last_name) VALUES(?,?)";
+		
 		PreparedStatement preparedStatement = null;
+		Connection connection = null;
 		try {
+			connection = DriverManager.getConnection("jdbc:mysql://localhost/test", "root", "");
+
 			//add user based on console input
 			preparedStatement = connection.prepareStatement(sqlStatement2);
 			preparedStatement.setString(1, firstName);
 			preparedStatement.setString(2, lastName);
 			preparedStatement.execute();
 			
+//			System.out.println("Adding more users");
 			//add a few more users
 			preparedStatement.setString(1, "Bo");
 			preparedStatement.setString(2, "Heyser");

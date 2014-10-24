@@ -4,14 +4,14 @@ public class Car {
 	//TODO figure out whether speed, x,y Location should be strings or ints/chars
 	private String color;
 	private String ai;
-	private int speed;
+	private double speed;
 	private int xLocation;
 	private char yLocation;
 	
 	public Car(String color, String ai, String speed, String xLocation, String yLocation){
 		this.color = color;
 		this.ai = ai;
-		this.speed = Integer.parseInt(speed);
+		this.speed = Double.parseDouble(speed);
 		this.xLocation = Integer.parseInt(xLocation);
 		this.yLocation = yLocation.charAt(0);
 	}
@@ -25,7 +25,7 @@ public class Car {
 		return this.ai;
 	}
 	
-	public int getSpeed(){
+	public double getSpeed(){
 		return this.speed;
 	}
 
@@ -37,7 +37,6 @@ public class Car {
 		return this.yLocation;
 	}
 	
-	
 	public void setColor(String nC){
 		this.color = nC;
 	}
@@ -46,7 +45,7 @@ public class Car {
 		this.ai = nAI;
 	}
 	
-	public void setSpeed(int nS){
+	public void setSpeed(double nS){
 		this.speed = nS;
 	}
 	
@@ -56,5 +55,9 @@ public class Car {
 	
 	public void setYLocation(char nYL){
 		this.yLocation = nYL;
+	}
+	
+	public String toString(){
+		return "Car Color: " + color + "   Row: " + xLocation + "   Column: " + yLocation + "   Speed: " + speed + "   AI: " + ai;
 	}
 }
