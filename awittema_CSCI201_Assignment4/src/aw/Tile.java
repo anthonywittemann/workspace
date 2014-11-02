@@ -31,6 +31,22 @@ public class Tile {
 		this.rotation = nRotation;
 	}
 	
+	//returns 1: blank, 2: I, 3: L, 4: T, 5: +
+	public short getTileType(){
+		if(type.equalsIgnoreCase("i")){
+			return 2;
+		}
+		else if(type.equalsIgnoreCase("l")){
+			return 3;
+		}
+		else if(type.equalsIgnoreCase("t")){
+			return 4;
+		}
+		else if(type.equalsIgnoreCase("p")){
+			return 5;
+		}
+		return 0;
+	}
 	
 	public String getType(){
 		return this.type;

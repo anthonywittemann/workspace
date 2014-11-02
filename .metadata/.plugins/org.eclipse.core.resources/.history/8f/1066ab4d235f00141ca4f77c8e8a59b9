@@ -1,0 +1,17 @@
+package aw;
+
+import java.util.Vector;
+
+
+public class Lab10Server {
+	//VECTOR WHEN MULTITHREADING, ARRAYLIST WHEN SINGLE THREAD
+	private Vector<AttackThread> ctVector = new Vector<AttackThread>();
+	//TODO remove clients from vector when disconnected
+
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+	}
+
+}

@@ -1,0 +1,79 @@
+package aw;
+
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+
+public class Lab10Frame extends JFrame{
+	
+	private JLabel p1HealthLbl;
+	private JLabel p2HealthLbl;
+	private JButton swordB;
+	private JButton magicB;
+
+	
+	public Lab10Frame(){
+		super("FF7");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setSize(200,200);
+		setLayout(new GridBagLayout());
+		
+		/*** Initialize components *** Initialize components ***  Initialize components *** Initialize components ***/
+		p1HealthLbl = new JLabel("10/10 Health");
+		p2HealthLbl = new JLabel("Waiting for other player");
+		swordB = new JButton("Sword");
+		swordB.setEnabled(false);
+		magicB = new JButton("Magic");
+		magicB.setEnabled(false);
+		
+		
+		
+		swordB.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO decrement other players health
+				
+			}
+			
+		});
+		
+		magicB.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO decrement other players health
+				
+			}
+			
+		});
+		
+		
+		
+		/*** adding components to GUI *** adding components to GUI *** adding components to GUI *** adding components to GUI ***/
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.gridy = 0; gbc.ipady = 10;
+		add(p1HealthLbl, gbc);
+		gbc.gridy = 1;
+		add(p2HealthLbl, gbc);
+		gbc.gridy = 2;
+		add(swordB, gbc);
+		gbc.gridy = 3;
+		add(magicB, gbc);
+		
+		
+		pack();
+		setVisible(true);
+	}
+
+	public static void main(String[] args) {
+		new Lab10Frame();
+
+	}
+
+}

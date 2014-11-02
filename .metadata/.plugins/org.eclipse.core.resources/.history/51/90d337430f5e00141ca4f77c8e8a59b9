@@ -1,0 +1,22 @@
+package aw;
+
+import javax.swing.JFrame;
+
+public class Lab10Frame extends JFrame{
+
+	
+	public Lab10Frame(){
+		super("FF7");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setSize(200,200);
+		
+		pack();
+		setVisible(true);
+	}
+
+	public static void main(String[] args) {
+		new Lab10Frame();
+
+	}
+
+}

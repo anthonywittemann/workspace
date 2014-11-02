@@ -1,0 +1,34 @@
+package aw;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+
+public class Lab10Frame extends JFrame{
+	
+	private JLabel p1HealthLbl;
+	private JLabel p2HealthLbl;
+	private JButton swordB;
+	private JButton magicB;
+
+	
+	public Lab10Frame(){
+		super("FF7");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setSize(200,200);
+		//TODO setLayout, add components
+		
+		p1HealthLbl = new JLabel("10/10 Health");
+		p2HealthLbl = new JLabel("Waiting for other player");
+		
+		
+		pack();
+		setVisible(true);
+	}
+
+	public static void main(String[] args) {
+		new Lab10Frame();
+
+	}
+
+}

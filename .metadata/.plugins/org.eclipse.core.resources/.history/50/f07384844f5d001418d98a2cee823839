@@ -1,0 +1,34 @@
+package aw;
+
+public class AI3 extends ParentAI{
+	
+	private boolean goingEast;
+	
+	public AI3(Car c){
+		super(c);
+		goingEast = true;
+	}
+
+	@Override
+	public void move() {
+		// TODO 
+		// The car always goes east given the opportunity until it hits the east most possible road.
+		// The car then always goes west given the opportunity until it hits the west most possible road.
+		// If the car cannot move its favored direction, it randomly picks a direction. (This includes
+		// going east if target is west and vice versa).
+		
+		if(goingEast){
+			if(super.canMoveEast){
+				super.moveEast();
+			}
+			else{ //TODO randomly choose direction
+				
+			}
+		}
+		else{ //going West
+			
+		}
+		
+	}
+
+}

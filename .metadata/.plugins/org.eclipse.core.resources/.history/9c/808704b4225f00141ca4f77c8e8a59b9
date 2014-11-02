@@ -1,0 +1,32 @@
+package aw;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.Socket;
+
+
+public class AttackThread extends Thread{
+	private Socket s;
+	private Lab10Server ls;
+	private PrintWriter pw;
+	private boolean isSword; //true if attacking with sword, false if with magic
+	
+	public AttackThread(Socket s, Lab10Server ls, boolean isSword){
+		this.s = s;
+		this.ls = ls;
+		this.isSword = isSword;
+		try {
+			this.pw = new PrintWriter(s.getOutputStream());
+		} catch (IOException ioe) {
+			System.out.println("IOE: " + ioe.getMessage());
+		}
+		
+	}
+	
+	
+	public void run(){
+		
+	}
+	
+	
+}

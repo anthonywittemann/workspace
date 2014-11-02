@@ -1,9 +1,0 @@
-package aw;
-
-public class Car {
-	
-	public Car(String color, String ai, String speed, String xLocation, String yLocation){
-		
-	}
-
-}

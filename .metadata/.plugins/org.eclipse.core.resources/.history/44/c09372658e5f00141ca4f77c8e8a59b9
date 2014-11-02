@@ -1,0 +1,44 @@
+package aw;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.net.UnknownHostException;
+
+import networking.ChatClient;
+
+public class Lab10Client extends Thread{
+
+	private PrintWriter pw;
+	private BufferedReader br;
+	
+	public Lab10Client(String hostname, int port){
+		try {
+			Socket s = new Socket(hostname, port);
+			this.pw = new PrintWriter(s.getOutputStream());
+			this.br = new BufferedReader(new InputStreamReader(s.getInputStream()));
+			this.start();
+			
+			while(true){
+				String line = scan.nextLine(); //TODO get this input from button and then 
+				pw.println(line);
+				pw.flush(); //FLUSH!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			}
+			
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		
+	}
+
+	public static void main(String[] args) {
+		new Lab10Client("localhost", 6789);
+
+	}
+
+}

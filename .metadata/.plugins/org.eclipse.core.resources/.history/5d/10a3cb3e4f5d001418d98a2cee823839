@@ -1,0 +1,15 @@
+package aw;
+
+public class AI3 extends ParentAI{
+	
+	public AI3(Car c){
+		super(c);
+	}
+
+	@Override
+	public void move() {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

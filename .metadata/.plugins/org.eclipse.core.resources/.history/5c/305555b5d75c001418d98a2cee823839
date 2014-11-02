@@ -1,0 +1,91 @@
+package aw;
+
+public class AI1 extends ParentAI{
+	
+	private short moveCount;
+	private short previousMove; //can be 0: no previous moves, 1: North, 2: East, 3: South, 4: West
+	
+	public AI1(Car c){
+		super(c);
+		moveCount = 0;
+		previousMove = 0;
+	}
+
+	@Override
+	public void move() {
+		// TODO Auto-generated method stub
+		
+		if(moveCount == 0){ //attempt to move left on first move
+			if(super.canMoveWest){
+				super.moveWest();
+				previousMove = 4;
+			}
+		}
+		
+		//On all subsequent moves, the car tries to move -90 degrees from its previous move.
+		//attempt to turn right
+		//If the desired direction isn't a valid move, the car attempts to move in the next direction clockwise.
+		//The car cannot move back to the tile it was previously on.
+		
+		if(previousMove == 1){ //last move was north
+			if(canMoveEast){ //attempt to move east
+				super.moveEast();
+				previousMove = 2;
+			}
+			else if(canMoveSouth){ //next try south, the next right after east
+				super.moveSouth();
+				previousMove = 3;
+			}
+			else{ //must move west b/c can't go back previous way (north)
+				super.moveWest();
+				previousMove = 4;
+			}
+		}
+		
+		
+		else if(previousMove == 2){ //last move was east
+			if(canMoveSouth){ 
+				super.moveSouth();
+				previousMove = 3;
+			}
+			else if(canMoveWest){ 
+				super.moveWest();
+				previousMove = 2;
+			}
+			else{
+				super.moveNorth();
+				previousMove = 1;
+			}
+		}
+		
+		
+		else if(previousMove == 3){ //last move was south
+			if(canMoveWest){ 
+				super.moveWest();
+				previousMove = 2;
+			}
+			else if(canMoveNorth){
+				super.moveNorth();
+				previousMove = 1;
+			}
+			else{
+				super.moveEast();
+				previousMove = 2;
+			}
+		}
+		
+		
+		else if(previousMove == 4){ //last move was west
+			
+		}
+		else{ //no previous moves
+			
+		}
+		
+		
+		
+		
+		moveCount++;
+	}
+
+}

@@ -1,0 +1,22 @@
+/**
+ * 
+ */
+package aw;
+
+/**
+ * @author anthonywittemann
+ *
+ */
+public class FactoryFrame extends JFrame{
+	
+	public FactoryFrame(){
+		
+	}
+
+
+	public static void main(String[] args) {
+		new FactoryFrame();
+
+	}
+
+}

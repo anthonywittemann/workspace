@@ -1,0 +1,29 @@
+/**
+ * 
+ */
+package aw;
+
+import javax.swing.JFrame;
+
+/**
+ * @author anthonywittemann
+ *
+ */
+public class FactoryFrame extends JFrame{
+	
+	public FactoryFrame(){
+		super("Factory");
+		setSize(800,600);
+		
+		
+		pack();
+		setVisible(true);
+	}
+
+
+	public static void main(String[] args) {
+		new FactoryFrame();
+
+	}
+
+}

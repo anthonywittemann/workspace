@@ -62,11 +62,11 @@
 		<item value="true" key="WizardZipFileResourceExportPage1.STORE_COMPRESS_CONTENTS_ID"/>
 		<item value="true" key="WizardZipFileResourceExportPage1.STORE_CREATE_STRUCTURE_ID"/>
 		<list key="WizardZipFileResourceExportPage1.STORE_DESTINATION_NAMES_ID">
+			<item value="/Users/anthonywittemann/Google Drive/Classes/CSCI 201/awittema_CSCI201_Assignment4.zip"/>
 			<item value="/Users/anthonywittemann/Desktop/awittema_CSCI201_Midterm.zip"/>
 			<item value="/Users/anthonywittemann/Desktop/USC/Classes/CSCI201/awittema_CSCI201_Assignment3.zip"/>
 			<item value="/Users/anthonywittemann/Desktop/USC/Classes/CSCI201/awittema_CSCI201_Lab5.zip"/>
 			<item value="/Users/anthonywittemann/Desktop/USC/Classes/CSCI201/awittema_CSCI201_Assignment2.zip"/>
-			<item value="/Users/anthonywittemann/Desktop/USC/Classes/CSCI201/awittema_CSCI201_Assignment1.zip"/>
 		</list>
 	</section>
 </section>
