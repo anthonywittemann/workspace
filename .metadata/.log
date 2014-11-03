@@ -1716,3 +1716,13 @@ Java Model Exception: Java Model Status [Timed out while retrieving the attached
 	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:53)
 !SUBENTRY 1 org.eclipse.jdt.core 4 1012 2014-10-28 21:20:07.418
 !MESSAGE Timed out while retrieving the attached javadoc for PrintWriter [in PrintWriter.class [in java.io [in /System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Classes/classes.jar]]] 
+!SESSION 2014-11-02 16:32:08.309 -----------------------------------------------
+eclipse.buildId=v22.2.1-833290
+java.version=1.8.0_25
+java.vendor=Oracle Corporation
+BootLoader constants: OS=macosx, ARCH=x86_64, WS=cocoa, NL=en_US
+Framework arguments:  -product com.android.ide.eclipse.adt.package.product -keyring /Users/anthonywittemann/.eclipse_keyring -showlocation
+Command-line arguments:  -os macosx -ws cocoa -arch x86_64 -product com.android.ide.eclipse.adt.package.product -keyring /Users/anthonywittemann/.eclipse_keyring -showlocation
+
+!ENTRY org.eclipse.ui 4 4 2014-11-02 16:32:14.259
+!MESSAGE Unable to find Action Set: org.eclipse.mylyn.context.ui.actionSet

@@ -1,0 +1,111 @@
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.util.Random;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
+
+public class Client extends JFrame implements ActionListener, Runnable {
+	private int life = 10;
+	private JLabel lifeLabel = new JLabel(life + "/10 Health");
+	private int otherLife = 10;
+	private JButton sword = new JButton("Sword");
+	private JButton magic = new JButton("Magic");
+	private JLabel otherLabel = new JLabel("Waiting for other player.");
+	private Socket socket;
+	private BufferedReader read;
+	private PrintWriter print;
+	private int id;
+	
+	Client(String title) {
+		super(title);
+		sword.setActionCommand("sword");
+		magic.setActionCommand("magic");
+		sword.addActionListener(this);
+		magic.addActionListener(this);
+        magic.setEnabled(false);
+        sword.setEnabled(false);
+		this.add(lifeLabel);
+		this.add(otherLabel);
+		this.add(sword);
+		this.add(magic);
+		this.setVisible(true);
+		this.setLayout(new GridLayout(4, 1));
+		this.setSize(500, 500);
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent ae) {
+        magic.setEnabled(false);
+        sword.setEnabled(false);
+        this.revalidate();
+        this.repaint();
+        try {
+            int d = 0;
+            if (ae.getActionCommand().equals("sword")) {
+                d = 2;
+            }
+            else if (ae.getActionCommand().equals("magic")) {
+                Random r = new Random();
+                d = r.nextInt(5) + 1;
+            }
+            else {
+                return;
+            }
+            this.otherLife -= d;
+            this.otherLabel.setText(this.otherLife + "/10 Health");
+            print.println(d);
+            if (this.otherLife <= 0) {
+                JOptionPane.showMessageDialog(null, "You won !", "Game over", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+            Thread.currentThread().sleep(3000);
+            magic.setEnabled(true);
+            sword.setEnabled(true);
+
+        } catch (Exception e) {
+            System.out.println(e.getCause());
+        }
+	}
+
+	@Override
+	public void run() {
+        try{
+            socket = new Socket("localhost", 4444);
+            read = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            print = new PrintWriter(socket.getOutputStream(), true);
+            while(this.life > 0) {
+                String attack = read.readLine();
+                int d = Integer.parseInt(attack);
+                if (d != -1) {
+                    this.life = this.life - d;
+                    if (this.life <= 0) {
+                        magic.setEnabled(false);
+                        sword.setEnabled(false);
+                       JOptionPane.showMessageDialog(null, "You lost !", "Game over", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                }
+                this.otherLabel.setText(this.otherLife + "/10 Health");
+                this.lifeLabel.setText(this.life + "/10 Health");
+                if (d == -1) {
+                    Thread.currentThread().sleep(3000);
+                    magic.setEnabled(true);
+                    sword.setEnabled(true);
+                }
+            }
+        }
+        catch(Exception e) {
+            System.out.print(e.getMessage());
+        }
+	}
+}

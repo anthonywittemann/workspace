@@ -9,128 +9,136 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.net.UnknownHostException;
+import java.util.Random;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 
-
-
-public class Lab10Client extends JFrame implements Runnable{
-
-	private PrintWriter pw;
-	private BufferedReader br;
-	private AttackThread attackThread;
-	
-	private JLabel p1HealthLbl;
-	private JLabel p2HealthLbl;
+public class Lab10Client extends JFrame implements ActionListener, Runnable {
+	private int myHealth = 10;
+	private JLabel myHealthLbl;
+	private int otherHealth = 10;
 	private JButton swordB;
 	private JButton magicB;
+	private JLabel otherHealthLbl;
+	private Socket socket;
+	private BufferedReader br;
+	private PrintWriter pw;
+	private int id;
+	private int port;
 	
-	//TODO figure out a way to call attack method on other threads, but not on own
-	//figure out which thread the client maps to
-	
-//	public Lab10Client(String hostname, int port, AttackThread attackThread){
-	public Lab10Client(String hostname, int port){
+	Lab10Client(String title, int port) {
 		super("FF7");
+		this.port = port;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setSize(200,200);
+		setSize(250,200);
 		setLayout(new GridBagLayout());
 		
 		/*** Initialize components *** Initialize components ***  Initialize components *** Initialize components ***/
-		p1HealthLbl = new JLabel("10/10 Health");
-		p2HealthLbl = new JLabel("Waiting for other player");
+		myHealthLbl = new JLabel("10/10 Health");
+		otherHealthLbl = new JLabel("Waiting for other player...");
 		swordB = new JButton("Sword");
 		swordB.setEnabled(false);
+		swordB.setActionCommand("sword");
+		swordB.addActionListener(this);
+		
 		magicB = new JButton("Magic");
 		magicB.setEnabled(false);
-		
-		
-		
-		swordB.addActionListener(new ActionListener(){
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				//attackThread.attackOther(true);
-				// TODO decrement other players health
-				//update JLabel
-				//wait 3 seconds until either button can be used again
-				
-			}
-			
-		});
-		
-		magicB.addActionListener(new ActionListener(){
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				//attackThread.attackOther(false);
-				// TODO decrement other players health
-				//update JLabel
-				//wait 3 seconds until either button can be used again
-				
-			}
-			
-		});
-		
-		
+		magicB.setActionCommand("magic");	
+		magicB.addActionListener(this);
+      
 		
 		/*** adding components to GUI *** adding components to GUI *** adding components to GUI *** adding components to GUI ***/
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.gridy = 0; gbc.ipady = 10;
-		add(p1HealthLbl, gbc);
+		add(myHealthLbl, gbc);
 		gbc.gridy = 1;
-		add(p2HealthLbl, gbc);
+		add(otherHealthLbl, gbc);
 		gbc.gridy = 2;
 		add(swordB, gbc);
 		gbc.gridy = 3;
 		add(magicB, gbc);
 		
 		
-		pack();
 		setVisible(true);
-		
-		
-		try {
-			Socket s = new Socket(hostname, port);
-			this.pw = new PrintWriter(s.getOutputStream());
-			this.br = new BufferedReader(new InputStreamReader(s.getInputStream()));
-			String answer = this.br.readLine();
-			System.out.println(answer);
-//			while(true){
-//				String line = scan.nextLine(); //TODO get this input from button and then pass it on to server
-//				pw.println(line);
-//				pw.flush(); //FLUSH!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-//			}
-			
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent ae) {
+        magicB.setEnabled(false);
+        swordB.setEnabled(false);
+        this.repaint();
+        try {
+            int damage = 0;
+            if (ae.getActionCommand().equals("sword")) {
+                damage = 2;
+            }
+            else if (ae.getActionCommand().equals("magic")) {
+                Random r = new Random();
+                damage = r.nextInt(5) + 1;
+            }
+            this.otherHealth -= damage;
+            this.otherHealthLbl.setText("Other Health " + this.otherHealth + "/10 Health");
+            pw.println(damage);
+            if (this.otherHealth <= 0) {
+                JOptionPane.showMessageDialog(null, "WINNER!!!", "Game over", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+            Thread.currentThread().sleep(3000);
+            magicB.setEnabled(true);
+            swordB.setEnabled(true);
+
+        } catch (InterruptedException ie) {
+			ie.printStackTrace();
 		}
-		
-		
+	}
+
+	@Override
+	public void run() {
+        try{
+            socket = new Socket("localhost", port);
+            br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            pw = new PrintWriter(socket.getOutputStream(), true);
+            while(this.myHealth > 0) {
+                String attack = br.readLine();
+                int damage = Integer.parseInt(attack);
+                //if it's not the first run
+                if (damage != -99) {
+                	this.myHealth -= damage;
+                	if (this.myHealth <= 0) {
+                		magicB.setEnabled(false);
+                		swordB.setEnabled(false);
+                		JOptionPane.showMessageDialog(null, "LOSER!", "Game over", JOptionPane.INFORMATION_MESSAGE);
+                		return;
+                	}
+                }
+                this.otherHealthLbl.setText("Other Health: " + this.otherHealth + "/10 Health");
+                this.myHealthLbl.setText("My Health: " + this.myHealth + "/10 Health");
+                //when the method is originally called before game starts
+                if (damage == -99) {
+                    Thread.currentThread().sleep(3000);
+                    magicB.setEnabled(true);
+                    swordB.setEnabled(true);
+                }
+            }
+        }
+        catch(InterruptedException ie) {
+        	ie.printStackTrace();
+        } catch (IOException ioe) {
+			ioe.printStackTrace();
+		}
 	}
 	
-	public void run(){
-		try {
-			while(true){
-				//TODO modify to listen to buttons
-				String line = br.readLine();
-				System.out.println(line);
-			}
-		} catch (IOException ioe) {
-			System.out.println("IOException in ChatClient run method: " + ioe.getMessage());
-		}
+	
+	public static void main(String[] args){
+		int port = 9876;//port should be above 1023 for non Admin/root
+        Lab10Client c = new Lab10Client("FF7", port);
+        new Thread(c).start();
 	}
 
-	public static void main(String[] args) {
-		Lab10Client l10c = new Lab10Client("localhost", 6789);
-		Thread t = new Thread(l10c);
-		t.start();
 
-	}
 
 }

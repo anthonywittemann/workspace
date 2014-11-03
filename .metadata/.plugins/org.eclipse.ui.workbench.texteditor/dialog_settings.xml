@@ -2,12 +2,13 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="setLayout" key="selection"/>
+		<item value="AttackThread" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
+			<item value="ChatThread"/>
 			<item value="setLayout"/>
 			<item value="best path"/>
 			<item value="move"/>
@@ -15,9 +16,9 @@
 			<item value="start"/>
 			<item value="hasTraveledN"/>
 			<item value="currentTile1"/>
-			<item value="currentTile"/>
 		</list>
 		<list key="replacehistory">
+			<item value="AttackThread"/>
 			<item value="East"/>
 			<item value="nY"/>
 			<item value="previousTile;"/>
@@ -25,7 +26,6 @@
 			<item value="loadNodes"/>
 			<item value="12"/>
 			<item value="25"/>
-			<item value="15"/>
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">

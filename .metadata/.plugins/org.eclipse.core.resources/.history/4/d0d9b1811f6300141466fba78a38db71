@@ -1,0 +1,83 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.ServerSocket;
+import java.net.Socket;
+
+
+public class Server extends Thread {
+    private int c = 0;
+    private Listener[] connections = new Listener[2];
+    private int port;
+    
+    public Server(int port){
+    	this.port = port;
+    }
+
+    public void run() {
+        ServerSocket serverSocket = null;
+        Socket socket = null;
+
+        try {
+            serverSocket = new ServerSocket(port);
+            while (c < 2) {
+                socket = serverSocket.accept();
+                connections[c] = new Listener(socket, c);
+                connections[c].start();
+                c++;
+            }
+            for (Listener i : connections) {
+                i.pw.println(-99);
+                i.pw.flush();
+            }
+        } catch (IOException e) {
+            System.err.println("Could not listen on port: " + port);
+            System.exit(1);
+        }
+    }
+
+    
+
+    private class Listener extends Thread {
+        public PrintWriter pw;
+        public BufferedReader br;
+        public Socket socket;
+        public int id;
+        Listener(Socket socket, int id) {
+            this.socket = socket;
+            this.id = id;
+            try {
+                pw = new PrintWriter(socket.getOutputStream(), true);
+                pw.flush();
+                br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            } catch (Exception e) {
+                System.out.println(e.getCause());
+            }
+        }
+
+        @Override
+        public void run() {
+            super.run();
+            System.out.println("Created listener thread.");
+            try {
+                while (true) {
+                    String msg = br.readLine(); //blocking line (waits until it receives input, makes sure there's no infinite loop, stackoverflow
+                    System.out.println("Server: " + msg);
+                    int d = Integer.parseInt(msg);
+                    connections[1 - id].pw.println(d);
+                    connections[1 - id].pw.flush();
+                }
+            } catch (Exception e) {
+                System.out.println(e.getCause());
+            }
+        }
+    }
+
+    
+    public static void main (String [] args) {
+    	int port = 9876;//port should be above 1023 for non Admin/root
+        Server server = new Server(port);
+        server.start();
+    }
+}

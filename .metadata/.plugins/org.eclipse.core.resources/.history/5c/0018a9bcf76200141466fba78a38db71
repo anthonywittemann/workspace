@@ -1,0 +1,72 @@
+package aw;
+
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.Vector;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+
+
+
+
+public class Lab10Server extends Thread{
+	//VECTOR WHEN MULTITHREADING, ARRAYLIST WHEN SINGLE THREAD
+	private Vector<AttackThread> atVector = new Vector<AttackThread>();
+	//TODO should only be 2 clients at once
+	private int port;
+	
+	
+	public Lab10Server(int port){
+		this.port = port;
+	}
+	
+	/*** DO SERVER STUFF *** DO SERVER STUFF *** DO SERVER STUFF *** DO SERVER STUFF *** DO SERVER STUFF *** DO SERVER STUFF ***/ 
+	public void run(){
+		try {
+			ServerSocket ss = new ServerSocket(port);
+			Socket s = null;
+			while(true){
+				if(atVector.size() < 2){
+					s = ss.accept();
+					AttackThread at = new AttackThread(s);
+					atVector.add(at);
+					at.start();
+					
+					if(atVector.size() == 2){
+						//TODO change JLabels on both to reflect that they're now connected
+						//Don't let any more connect
+					}
+				}
+			}
+			for(AttackThread a: atVector){
+				a.out.println(-1);
+				a.out.flush();
+			}
+			
+		} catch (IOException ioe) {
+			System.out.println("IOE: " + ioe.getMessage());
+		}
+	}
+	
+	
+	public static void main(String[] args){
+		int port = 6789;//port should be above 1023 for non Admin/root
+		Lab10Server server = new Lab10Server(port);
+		server.start();
+		Lab10Client l10c = new Lab10Client("localhost", port, "Player 1");
+		Thread t = new Thread(l10c);
+		t.start();
+		Lab10Client l10c2 = new Lab10Client("localhost", port, "Player 2");
+		Thread t2 = new Thread(l10c2);
+		t2.start();
+	}
+
+}

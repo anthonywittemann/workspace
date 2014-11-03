@@ -1,0 +1,125 @@
+package aw;
+
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.Vector;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+
+
+
+
+public class Lab10Server extends Thread{
+	//VECTOR WHEN MULTITHREADING, ARRAYLIST WHEN SINGLE THREAD
+	private Vector<AttackThread> atVector = new Vector<AttackThread>();
+	//TODO should only be 2 clients at once
+	private int port;
+	
+	
+	public Lab10Server(int port){
+		this.port = port;
+	}
+	
+	/*** DO SERVER STUFF *** DO SERVER STUFF *** DO SERVER STUFF *** DO SERVER STUFF *** DO SERVER STUFF *** DO SERVER STUFF ***/ 
+	public void run(){
+		super.run();
+		try {
+			ServerSocket ss = new ServerSocket(port);
+			Socket s = null;
+			boolean bothConnected = false;
+			while(!bothConnected){
+				if(atVector.size() < 2){
+					s = ss.accept();
+					AttackThread at = new AttackThread(s, (short) atVector.size());
+					atVector.add(at);
+					at.start();
+					
+					if(atVector.size() == 2){
+						//TODO change JLabels on both to reflect that they're now connected
+						//Don't let any more connect
+						bothConnected = true;
+					}
+				}
+			}
+			for(AttackThread a: atVector){
+				a.pw.println(-1);
+				a.pw.flush();
+			}
+			
+		} catch (IOException ioe) {
+			System.out.println("IOE: " + ioe.getMessage());
+		}
+	}
+	
+	
+	
+	
+	private class AttackThread extends Thread{
+		public Socket s;
+		public PrintWriter pw;
+		public BufferedReader br;
+		private boolean isSword;
+		private short pHealth;
+		private short pNum;
+		
+		AttackThread(Socket s, short pNum){
+			this.s = s;
+			this.pNum = pNum;
+			isSword = true;
+			pHealth = 10;
+			try {
+				this.pw = new PrintWriter(this.s.getOutputStream(), true);
+				pw.flush();
+				br = new BufferedReader(new InputStreamReader(this.s.getInputStream()));
+			} catch (IOException ioe) {
+				System.out.println("IOE: " + ioe.getMessage());
+			}
+			
+		}
+		
+		
+		public void run(){
+			// a client has connected to our server
+			super.run();
+			
+			try {
+				while(true){
+					String line = br.readLine(); //blocking line (waits until it receives input, makes sure there's no infinite loop, stackoverflow
+					System.out.println("Server: " + line);
+                    int i = Integer.parseInt(line);
+                    atVector.get(pNum).pw.println(i);
+                    atVector.get(pNum).pw.flush();
+				}
+
+			} catch (IOException ioe) {
+				System.out.println("IOE: " + ioe.getMessage());
+				//thrown when client disconnected 
+			}
+		}
+	}
+	
+	
+	
+	public static void main(String[] args){
+		int port = 6789;//port should be above 1023 for non Admin/root
+		Lab10Server server = new Lab10Server(port);
+		server.start();
+		Lab10Client l10c = new Lab10Client("localhost", port, "Player 1");
+		Thread t = new Thread(l10c);
+		t.start();
+		Lab10Client l10c2 = new Lab10Client("localhost", port, "Player 2");
+		Thread t2 = new Thread(l10c2);
+		t2.start();
+	}
+
+}
