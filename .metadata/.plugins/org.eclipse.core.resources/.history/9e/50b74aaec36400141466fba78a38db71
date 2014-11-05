@@ -1,0 +1,23 @@
+package lab11;
+
+import java.util.concurrent.locks.ReentrantLock;
+
+public class MostPlacedTimeCommand extends SQLCommand {
+
+	//Create a constructor that takes both the lock and an integer representing which place to get statistics for
+	public MostPlacedTimeCommand(ReentrantLock queryLock, int statsPlace) {
+		super(queryLock);
+		// obtain lock and lock it
+		super.queryLock.lock();
+	}
+
+	@Override
+	public boolean execute() {
+		// TODO 
+		
+		//give the lock back
+		super.queryLock.unlock();
+		return false;
+	}
+
+}

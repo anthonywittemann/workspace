@@ -1,0 +1,37 @@
+package lab11;
+
+import java.sql.PreparedStatement;
+import java.util.concurrent.locks.ReentrantLock;
+
+public class AddHorseCommand extends SQLCommand {
+
+	public AddHorseCommand(ReentrantLock queryLock) {
+		super(queryLock);
+		
+	}
+
+	
+	/**
+	 * 2.1. Select 2 random words from the words table (hints - Order by RAND() and limit)
+	 * 2.2. Create a new record in the horse table with name firstWord + “ “ + secondWord
+	 */
+	@Override
+	public boolean execute() {
+		// TODO 
+		String firstN = ;
+		String lastN = ;
+		
+		String horse_name = firstN + lastN;
+		String sqlStatement = "INSERT INTO horse(horse_name) VALUES(?)";
+		
+		PreparedStatement preparedStatement = null;
+		
+		//add user based on console input
+		preparedStatement = connection.prepareStatement(sqlStatement);
+		preparedStatement.setString(1, horse_name);
+		preparedStatement.execute();
+		
+		return false;
+	}
+
+}

@@ -1,0 +1,27 @@
+package lab11;
+
+import java.util.concurrent.locks.ReentrantLock;
+
+public class RaceCommand extends SQLCommand{
+
+	public RaceCommand(ReentrantLock queryLock) {
+		super(queryLock);
+		//acquire the lock and lock it
+		super.queryLock.lock();
+	}
+
+	/**
+	 * 2.1. Obtain the highest race number so far, add one and use that as this race’s number 
+	 * (hint - sql max function, you may also need to make use of SQL aliases)
+	 * 2.2. Select 8 horse_id’s at random and insert the 8 sets of race_number, horse_id, and place into race_result
+	 */
+	@Override
+	public boolean execute() {
+		
+		
+		//give the lock back after done using it
+		super.queryLock.unlock();
+		return false;
+	}
+
+}
