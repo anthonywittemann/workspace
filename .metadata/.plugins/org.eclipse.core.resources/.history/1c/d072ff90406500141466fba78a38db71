@@ -26,7 +26,7 @@ public class Tables {
 				noTablesAvailable.await();
 				Restaurant.addMessage("Table became available.");
 			}
-			// when this thread is signaled, find the table that is available
+			// when this thread is signalled, find the table that is available
 			for (int i=0; i < this.numTables; i++) {
 				if (tableArray[i] == null) {
 					tableArray[i] = new Table(i);

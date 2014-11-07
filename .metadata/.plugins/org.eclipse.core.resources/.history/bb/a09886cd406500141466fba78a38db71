@@ -51,7 +51,7 @@ public class WaiterFactory {
 					waiterAvailable.await();
 				}
 			}
-		} catch(InterruptedException ie) { 
+		} catch(InterruptedException ie) {
 			System.out.println("WaiterFactory.getWaiter(): IE : " + ie.getMessage());
 		} finally {
 			lock.unlock();

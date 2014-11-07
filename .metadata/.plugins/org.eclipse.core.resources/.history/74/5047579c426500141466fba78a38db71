@@ -97,7 +97,7 @@ public class Restaurant extends JFrame {
 					
 					//Add all the tables to the unoccupied tables arrayList
 					for(int i = 0; i < getNumTables(); i++){
-						openTables.add(new Integer(i));
+						openTables.add(i);
 					}
 					updateTableLabels();
 

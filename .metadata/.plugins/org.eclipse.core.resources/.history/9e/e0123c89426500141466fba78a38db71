@@ -96,10 +96,9 @@ public class Restaurant extends JFrame {
 					customerFactory = new CustomerFactory(ht);
 					
 					//Add all the tables to the unoccupied tables arrayList
-					for(int i = 0; i < getNumTables(); i++){
-						openTables.add(new Integer(i));
-					}
-					updateTableLabels();
+//					for(int i = 0; i < getNumTables(); i++){
+//						openTables.add(i);
+//					}
 
 				}
 				else if (jbRestaurant.getText().equals("Stop Restaurant")) {

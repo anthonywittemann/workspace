@@ -52,8 +52,6 @@ class CustomerThread extends Thread {
 			Thread.sleep(1000 * (int)(Math.random() * 10)); // sleep for between 0 and 10 seconds
 			hostessThread.customerLeaving(this);
 		} catch (InterruptedException ie) {
-			//TODO remove threads in arrayList during their sleep 
-			ie.printStackTrace();
 			System.out.println("CustomerThread.run(): InterruptedException: " + ie.getMessage());
 		}
 	}
