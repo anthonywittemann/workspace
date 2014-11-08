@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Codename Waldo</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <dimen name="CreateAccountButtonDimension">36sp</dimen>
+    <string name="GooglePlus">Google+</string>
+    <string name="Facebook">Facebook</string>
+    <string name="Email">Email</string>
+    <string name="CreateAccount">Create Account</string>
+
+</resources>

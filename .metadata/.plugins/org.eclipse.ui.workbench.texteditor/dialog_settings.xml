@@ -2,37 +2,37 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="AttackThread" key="selection"/>
+		<item value="@color" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
-			<item value="ChatThread"/>
-			<item value="setLayout"/>
-			<item value="best path"/>
-			<item value="move"/>
-			<item value="makeMove"/>
-			<item value="start"/>
-			<item value="hasTraveledN"/>
-			<item value="currentTile1"/>
+			<item value="@color"/>
+			<item value="interrupted"/>
+			<item value="addWaiterMess"/>
+			<item value="otherLife"/>
+			<item value="myHealth"/>
+			<item value="otherHealthLbl"/>
+			<item value="health"/>
+			<item value="server"/>
 		</list>
 		<list key="replacehistory">
-			<item value="AttackThread"/>
-			<item value="East"/>
-			<item value="nY"/>
-			<item value="previousTile;"/>
-			<item value="previousTile"/>
-			<item value="loadNodes"/>
-			<item value="12"/>
-			<item value="25"/>
+			<item value="pw"/>
+			<item value="br"/>
+			<item value="otherHealthLbl"/>
+			<item value="otherLbl"/>
+			<item value="myHealthLbl"/>
+			<item value="myHealth"/>
+			<item value="listenerVector"/>
+			<item value="ListenThread"/>
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
 		<item value="265" key="DIALOG_WIDTH"/>
 		<item value="1|.Helvetica Neue DeskInterface|11.0|0|COCOA|1|.HelveticaNeueDeskInterface-Regular" key="DIALOG_FONT_NAME"/>
 		<item value="399" key="DIALOG_HEIGHT"/>
-		<item value="0" key="DIALOG_Y_ORIGIN"/>
-		<item value="1380" key="DIALOG_X_ORIGIN"/>
+		<item value="165" key="DIALOG_Y_ORIGIN"/>
+		<item value="1084" key="DIALOG_X_ORIGIN"/>
 	</section>
 </section>

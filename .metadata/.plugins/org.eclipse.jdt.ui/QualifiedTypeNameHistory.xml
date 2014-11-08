@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="javax.xml.transform.Transformer"/>
-<fullyQualifiedTypeName name="javax.xml.transform.dom.DOMSource"/>
-<fullyQualifiedTypeName name="javax.xml.transform.stream.StreamResult"/>
-<fullyQualifiedTypeName name="java.net.URLConnection"/>
-<fullyQualifiedTypeName name="java.awt.event.ComponentListener"/>
-<fullyQualifiedTypeName name="aw.MainFrame"/>
 <fullyQualifiedTypeName name="java.awt.event.ComponentAdapter"/>
 <fullyQualifiedTypeName name="java.awt.Graphics"/>
 <fullyQualifiedTypeName name="org.w3c.dom.NamedNodeMap"/>
@@ -22,7 +16,6 @@
 <fullyQualifiedTypeName name="java.awt.event.KeyEvent"/>
 <fullyQualifiedTypeName name="java.awt.event.ActionEvent"/>
 <fullyQualifiedTypeName name="java.io.FileNotFoundException"/>
-<fullyQualifiedTypeName name="java.io.IOException"/>
 <fullyQualifiedTypeName name="java.io.FileReader"/>
 <fullyQualifiedTypeName name="javax.swing.JFileChooser"/>
 <fullyQualifiedTypeName name="javax.swing.JMenuItem"/>
@@ -37,11 +30,7 @@
 <fullyQualifiedTypeName name="java.awt.GridLayout"/>
 <fullyQualifiedTypeName name="java.sql.DriverManager"/>
 <fullyQualifiedTypeName name="java.sql.Connection"/>
-<fullyQualifiedTypeName name="java.sql.PreparedStatement"/>
-<fullyQualifiedTypeName name="java.sql.Statement"/>
-<fullyQualifiedTypeName name="java.sql.ResultSet"/>
 <fullyQualifiedTypeName name="java.net.ServerSocket"/>
-<fullyQualifiedTypeName name="java.util.Vector"/>
 <fullyQualifiedTypeName name="java.util.Scanner"/>
 <fullyQualifiedTypeName name="java.net.Socket"/>
 <fullyQualifiedTypeName name="java.io.BufferedReader"/>
@@ -50,8 +39,6 @@
 <fullyQualifiedTypeName name="java.awt.Font"/>
 <fullyQualifiedTypeName name="javax.swing.Timer"/>
 <fullyQualifiedTypeName name="javax.swing.JScrollPane"/>
-<fullyQualifiedTypeName name="java.util.ArrayList"/>
-<fullyQualifiedTypeName name="java.util.List"/>
 <fullyQualifiedTypeName name="java.io.File"/>
 <fullyQualifiedTypeName name="javax.swing.JLabel"/>
 <fullyQualifiedTypeName name="javax.swing.JButton"/>
@@ -60,4 +47,17 @@
 <fullyQualifiedTypeName name="java.awt.event.ActionListener"/>
 <fullyQualifiedTypeName name="javax.swing.JFrame"/>
 <fullyQualifiedTypeName name="java.io.PrintWriter"/>
+<fullyQualifiedTypeName name="java.util.Random"/>
+<fullyQualifiedTypeName name="javax.swing.JOptionPane"/>
+<fullyQualifiedTypeName name="java.io.IOException"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="java.util.Vector"/>
+<fullyQualifiedTypeName name="java.util.concurrent.locks.ReentrantLock"/>
+<fullyQualifiedTypeName name="java.util.Collections"/>
+<fullyQualifiedTypeName name="java.util.List"/>
+<fullyQualifiedTypeName name="java.sql.SQLException"/>
+<fullyQualifiedTypeName name="java.sql.PreparedStatement"/>
+<fullyQualifiedTypeName name="java.sql.Statement"/>
+<fullyQualifiedTypeName name="java.sql.ResultSet"/>
+<fullyQualifiedTypeName name="android.content.Intent"/>
 </qualifiedTypeNameHistroy>
