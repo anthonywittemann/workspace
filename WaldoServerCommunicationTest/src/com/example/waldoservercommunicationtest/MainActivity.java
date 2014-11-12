@@ -165,7 +165,7 @@ public class MainActivity extends Activity implements OnGestureListener, OnDoubl
             float velocityX, float velocityY) {
         Log.d(DEBUG_TAG, "onFling: " + event1.toString()+event2.toString());
         Toast.makeText(getApplicationContext(), "Fling!!!", Toast.LENGTH_SHORT).show();
-        //TODO check if the fling is a swipe then change the image 
+        //TODO check if the fling is a swipe then change the imageview 
         
         return true;
     }
@@ -229,7 +229,7 @@ public class MainActivity extends Activity implements OnGestureListener, OnDoubl
 
 	@Override
 	public boolean onDrag(View v, DragEvent event) {
-		// TODO Draw Box
+		// TODO Draw Box using Bitmap drawable or OpenGL
 		return false;
 	}
 

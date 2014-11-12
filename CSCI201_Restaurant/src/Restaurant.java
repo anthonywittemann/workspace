@@ -30,6 +30,8 @@ public class Restaurant extends JFrame {
 	private static WaiterFactory waiterFactory;
 	private JPanel waitersPanel;
 	private static JTextArea jtaWaiters[];
+	
+	
 	//add 2 JLabels to keep track of open and occupied tables at top of GUI
 	private static JLabel openTablesLbl; 
 //	private static Vector<Integer> openTables = new Vector<Integer>();
@@ -37,6 +39,9 @@ public class Restaurant extends JFrame {
 	private static JLabel usedTablesLbl;
 	private static List<Integer> usedTables = Collections.synchronizedList(new ArrayList<Integer>());
 	private static JPanel openUsedTablesPanel;
+	//TODO implement the busboyFactory and create that class
+	//private static BusboyFactory busboyFactory; //I added this
+	
 	
 	public Restaurant() {
 		super("CSCI 201 Synchronization");
@@ -106,6 +111,9 @@ public class Restaurant extends JFrame {
 					addMessage("RESTAURANT STOPPED");
 					addMessage("***********************************");
 					//remove(waitersPanel);
+					//TODO remove elements from the syncronized lists to avoid interuptedexception
+					openTables.removeAll(openTables);
+					usedTables.removeAll(usedTables);
 					customerFactory.interrupt();
 					jbRestaurant.setText("Start Restaurant");
 				}
@@ -156,6 +164,17 @@ public class Restaurant extends JFrame {
 		}
 	}
 	
+	
+//	public static void addBusboyMessage(String msg, int busboyNumber){
+//		String text = jtaBusboys[busboyNumber].getText();
+//		if (text == null || text.length() == 0) {
+//			jtaBusboys[busboyNumber].setText(msg);
+//		}
+//		else {
+//			jtaBusboys[busboyNumber].setText(jtaBusboys[busboyNumber].getText() + "\n" + msg);
+//		}
+//	}
+	
 	// add a table to JLabel of used tables, remove from JLabel of open tables
 	public static void tableOccupied(int tableNum){
 		//TODO add lock here to avoid ConcurrentModificationException
@@ -190,6 +209,7 @@ public class Restaurant extends JFrame {
 		updateTableLabels();
 	}
 	
+	//I added this method to update the labels for tables open/closed
 	private static void updateTableLabels(){
 		String openTablesString = "";
 		for(Integer o: openTables){

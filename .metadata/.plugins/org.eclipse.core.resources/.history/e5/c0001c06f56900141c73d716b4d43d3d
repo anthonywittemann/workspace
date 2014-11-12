@@ -1,0 +1,19 @@
+import java.util.Vector;
+
+
+public class BusboyFactory {
+	
+	private Vector<BusboyThread> busboyThreadVector = new Vector<BusboyThread>();
+	
+	public BusboyFactory(){
+		
+	}
+	
+	
+	
+	
+	private class BusboyThread extends Thread{
+		
+	}
+
+}

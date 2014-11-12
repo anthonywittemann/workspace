@@ -16,9 +16,10 @@ public class Hostess {
 			table.seatTable(customerThread, waiter);
 			Restaurant.addWaiterMessage("Customer " + customerThread.getCustomerNumber() + " is seated at table " + table.getTableNumber(), waiter.getWaiterNumber());
 			Restaurant.addMessage("Hostess seated customer " + customerThread.getCustomerNumber() + " at table " + table.getTableNumber() + " with waiter " + waiter.getWaiterNumber());
-			//TODO let table JLabels know table is now occupied
+			//let table JLabels know table is now occupied
 			Restaurant.tableOccupied(table.getTableNumber());
 		} catch (InterruptedException ie) {
+			//TODO make sure this never happens
 			System.out.println("HostessThread.seatCustomer():InterruptedException: " + ie.getMessage());
 		}
 		return table;
@@ -29,7 +30,7 @@ public class Hostess {
 		Restaurant.addMessage("Customer " + customerThread.getCustomerNumber() + " is done eating and is leaving.");
 		customerThread.getTable().getWaiterThread().returnTable(customerThread.getTable());
 		tables.returnTable(customerThread.getTable());
-		//TODO let table JLabels know table is now open
+		//let table JLabels know table is now open
 		Restaurant.tableUnoccupied(customerThread.getTable().getTableNumber());
 	}
 
