@@ -28,10 +28,14 @@ public class Hostess {
 	public void customerLeaving(CustomerThread customerThread) {
 		Restaurant.addWaiterMessage("Customer " + customerThread.getCustomerNumber() + " is done eating and is leaving.", customerThread.getTable().getWaiterThread().getWaiterNumber());
 		Restaurant.addMessage("Customer " + customerThread.getCustomerNumber() + " is done eating and is leaving.");
+		//TODO start the busboys to clean
+//		Restaurant.addMessage("Busboys " + Restaurant.getBusboyFactory().getCleaningBusboys() + " are starting to clean");
+		Restaurant.addMessage("Busboys cleaned Table " + customerThread.getTable().getTableNumber() + "!"); //busboys done!
 		customerThread.getTable().getWaiterThread().returnTable(customerThread.getTable());
 		tables.returnTable(customerThread.getTable());
 		//let table JLabels know table is now open
 		Restaurant.tableUnoccupied(customerThread.getTable().getTableNumber());
+		
 	}
 
 }

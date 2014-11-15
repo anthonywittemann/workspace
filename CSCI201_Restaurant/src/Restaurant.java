@@ -24,7 +24,7 @@ public class Restaurant extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private static JTextArea jtaMessages;
-	private JComboBox<Integer> jcbNumWaiters, jcbNumBusboys, jcbNumTables, jcbNumTablesPerWaiter, jcbNumTablesPerBusboy;
+	private JComboBox<Integer> jcbNumWaiters, jcbNumBusboys, jcbNumTables, jcbNumTablesPerWaiter, jcbNumBusboysPerTable;
 	private JButton jbRestaurant;
 	private CustomerFactory customerFactory;
 	private static WaiterFactory waiterFactory;
@@ -40,7 +40,7 @@ public class Restaurant extends JFrame {
 	private static List<Integer> usedTables = Collections.synchronizedList(new ArrayList<Integer>());
 	private static JPanel openUsedTablesPanel;
 	//TODO implement the busboyFactory and create that class
-	//private static BusboyFactory busboyFactory; //I added this
+	private static BusboyFactory busboyFactory; //I added this
 	
 	
 	public Restaurant() {
@@ -54,7 +54,7 @@ public class Restaurant extends JFrame {
 		jcbNumBusboys = new JComboBox<Integer>(numbers);
 		jcbNumTables = new JComboBox<Integer>(numbers);
 		jcbNumTablesPerWaiter = new JComboBox<Integer>(numbers);
-		jcbNumTablesPerBusboy = new JComboBox<Integer>(numbers);
+		jcbNumBusboysPerTable = new JComboBox<Integer>(numbers);
 		
 		JLabel jlNumWaiters = new JLabel("Number of Waiters");
 		addComboBox(jp, jlNumWaiters, jcbNumWaiters, 0, 0);
@@ -63,7 +63,7 @@ public class Restaurant extends JFrame {
 		JLabel jlNumBusboys = new JLabel("Number of Busboys");
 		addComboBox(jp, jlNumBusboys, jcbNumBusboys, 2, 0);
 		JLabel jlNumTablesPerBusboy = new JLabel("Number of Tables Per Busboy");
-		addComboBox(jp, jlNumTablesPerBusboy, jcbNumTablesPerBusboy, 2, 1);
+		addComboBox(jp, jlNumTablesPerBusboy, jcbNumBusboysPerTable, 2, 1);
 		JLabel jlNumTables = new JLabel("Number of Tables");
 		addComboBox(jp, jlNumTables, jcbNumTables, 0, 2);
 		
@@ -79,7 +79,7 @@ public class Restaurant extends JFrame {
 					addMessage("Number of waiters: " + getNumWaiters());
 					addMessage("Number of tables per waiter: " + getNumTablesPerWaiter());
 					addMessage("Number of busboys: " + getNumBusboys());
-					addMessage("Number of tables per busboy: " + getNumTablesPerBusboy());
+					addMessage("Number of busboys per table: " + getNumBusboysPerTable());
 					addMessage("RESTAURANT STARTED");
 					addMessage("***********************************");
 					jbRestaurant.setText("Stop Restaurant");
@@ -98,6 +98,7 @@ public class Restaurant extends JFrame {
 					// MULTI-THREADING PART OF CODE
 					Hostess ht = new Hostess(getNumTables());
 					waiterFactory = new WaiterFactory(ht, getNumWaiters(), getNumTablesPerWaiter());
+					busboyFactory = new BusboyFactory(ht, getNumBusboys(), getNumBusboysPerTable());
 					customerFactory = new CustomerFactory(ht);
 					
 					//Add all the tables to the unoccupied tables arrayList
@@ -110,10 +111,10 @@ public class Restaurant extends JFrame {
 				else if (jbRestaurant.getText().equals("Stop Restaurant")) {
 					addMessage("RESTAURANT STOPPED");
 					addMessage("***********************************");
-					//remove(waitersPanel);
-					//TODO remove elements from the syncronized lists to avoid interuptedexception
+					//remove elements from the syncronized lists to avoid interuptedexception
 					openTables.removeAll(openTables);
 					usedTables.removeAll(usedTables);
+					customerFactory.removeAllCustomers();
 					customerFactory.interrupt();
 					jbRestaurant.setText("Start Restaurant");
 				}
@@ -165,26 +166,17 @@ public class Restaurant extends JFrame {
 	}
 	
 	
-//	public static void addBusboyMessage(String msg, int busboyNumber){
-//		String text = jtaBusboys[busboyNumber].getText();
-//		if (text == null || text.length() == 0) {
-//			jtaBusboys[busboyNumber].setText(msg);
-//		}
-//		else {
-//			jtaBusboys[busboyNumber].setText(jtaBusboys[busboyNumber].getText() + "\n" + msg);
-//		}
-//	}
 	
 	// add a table to JLabel of used tables, remove from JLabel of open tables
-	public static void tableOccupied(int tableNum){
-		//TODO add lock here to avoid ConcurrentModificationException
-		synchronized(openTables){
-			for(Integer i: openTables){ //remove table from openTables
-				if(i == tableNum){
-					openTables.remove(i);
-				}
+	public static synchronized void tableOccupied(int tableNum){
+		//add lock here to avoid ConcurrentModificationException
+		for(int i = 0; i < openTables.size(); i++){
+			if(openTables.get(i) == tableNum){
+				openTables.remove(i);
 			}
 		}
+				
+//		}
 		
 		
 		usedTables.add(tableNum); //add table to usedTables
@@ -193,16 +185,14 @@ public class Restaurant extends JFrame {
 	}
 	
 	// add a table to JLabel of open tables, remove from JLabel of used tables
-	public static void tableUnoccupied(int tableNum){
-		//TODO add lock here to avoid ConcurrentModificationException
-		synchronized(usedTables){
-			for(Integer u: usedTables){ //remove table from openTables
-				if(u == tableNum){
-					usedTables.remove(u);
-				}
+	public static synchronized void tableUnoccupied(int tableNum){
+		//add lock here to avoid ConcurrentModificationException
+		for(int i = 0; i < usedTables.size(); i++){
+			if(usedTables.get(i) == tableNum){
+				usedTables.remove(i);
 			}
 		}
-		
+
 		
 		openTables.add(tableNum); //add table to usedTables
 		
@@ -247,6 +237,10 @@ public class Restaurant extends JFrame {
 		return waiterFactory;
 	}
 	
+	public static BusboyFactory getBusboyFactory(){
+		return busboyFactory;
+	}
+	
 	public int getNumWaiters() {
 		return jcbNumWaiters.getItemAt(jcbNumWaiters.getSelectedIndex());
 	}
@@ -259,8 +253,8 @@ public class Restaurant extends JFrame {
 		return jcbNumTablesPerWaiter.getItemAt(jcbNumTablesPerWaiter.getSelectedIndex());
 	}
 	
-	public int getNumTablesPerBusboy() {
-		return jcbNumTablesPerBusboy.getItemAt(jcbNumTablesPerBusboy.getSelectedIndex());
+	public int getNumBusboysPerTable() {
+		return jcbNumBusboysPerTable.getItemAt(jcbNumBusboysPerTable.getSelectedIndex());
 	}
 	
 	public int getNumTables() {

@@ -1,0 +1,42 @@
+import java.util.Vector;
+
+
+public class BusboyFactory {
+	
+	private Vector<BusboyThread> busboyThreadVector = new Vector<BusboyThread>();
+	private Hostess hostess;
+	private int numBusboys;
+	private int numBusboysPerTable;
+	
+	public BusboyFactory(Hostess hostess, int numBusboys, int numBusboysPerTable) {
+		this.hostess = hostess;
+		this.numBusboys = numBusboys;
+		this.numBusboysPerTable = numBusboysPerTable;
+		for (int i=0; i < numBusboys; i++) {
+			busboyThreadVector.add(new BusboyThread(hostess, i, this, numBusboysPerTable));
+		}
+	}
+	
+	
+	
+	
+	private class BusboyThread extends Thread{
+		
+		
+		
+		public void run(){
+//			try {
+//				while (true) {
+//					// busboy can only have one table currently, but multiple busboys can be assigned to one table
+//					
+//				}
+//			} catch (InterruptedException ie) {
+//				System.out.println("BusboyThread.run(): InterruptedException: " + ie.getMessage());
+//			}
+		}
+	}
+	
+	
+}
+
+

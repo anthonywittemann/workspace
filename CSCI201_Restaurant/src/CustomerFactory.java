@@ -25,6 +25,10 @@ public class CustomerFactory extends Thread {
 			}
 		}
 	}
+	
+	public void removeAllCustomers(){
+		customerThreadVector.removeAll(customerThreadVector);
+	}
 }
 
 class CustomerThread extends Thread {
@@ -45,14 +49,17 @@ class CustomerThread extends Thread {
 	public Table getTable() {
 		return this.table;
 	}
+
 	
 	public void run() {
 		try {
-			table = hostessThread.seatCustomer(this);
-			Thread.sleep(1000 * (int)(Math.random() * 10)); // sleep for between 0 and 10 seconds
-			hostessThread.customerLeaving(this);
+			if(hostessThread != null){
+				table = hostessThread.seatCustomer(this);
+				Thread.sleep(1000 * (int)(Math.random() * 10)); // sleep for between 0 and 10 seconds
+				hostessThread.customerLeaving(this);
+			}
+			
 		} catch (InterruptedException ie) {
-			//TODO remove threads in arrayList during their sleep 
 			ie.printStackTrace();
 			System.out.println("CustomerThread.run(): InterruptedException: " + ie.getMessage());
 		}

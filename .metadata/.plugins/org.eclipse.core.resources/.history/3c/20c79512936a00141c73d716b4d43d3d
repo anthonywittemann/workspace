@@ -1,0 +1,88 @@
+import java.util.Vector;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
+
+public class BusboyFactory {
+	
+	private Vector<BusboyThread> busboyThreadVector = new Vector<BusboyThread>();
+	private Hostess hostess;
+	private int numBusboys;
+	private int numBusboysPerTable;
+	private Lock lock = new ReentrantLock();
+	private Condition busboyAvailable = lock.newCondition();
+	
+	public BusboyFactory(Hostess hostess, int numBusboys, int numBusboysPerTable) {
+		this.hostess = hostess;
+		this.numBusboys = numBusboys;
+		this.numBusboysPerTable = numBusboysPerTable;
+		for (int i=0; i < numBusboys; i++) {
+			busboyThreadVector.add(new BusboyThread(hostess, i, this, numBusboysPerTable));
+		}
+	}
+	
+	public void returnWaiter(WaiterThread wt) {
+		lock.lock();
+		wt.returnTable(wt.getTable(0));
+		//waiterThreadVector.set(wt.getWaiterNumber(), new WaiterThread(wt.getHostess(), wt.getWaiterNumber(), this));
+		busboyAvailable.signal();
+		lock.unlock();
+
+	}
+	
+	public WaiterThread getWaiter() {
+		WaiterThread wt = null;
+		try {
+			lock.lock();
+			while (wt == null) {
+				int i;
+				for (i=0; i < busboyThreadVector.size(); i++) {
+					wt = busboyThreadVector.get(i);
+					// this will only allow one table per waiter
+					// use a semaphore to allow more than one table per waiter
+					if (wt.getNumAvailableTables() > 0) {
+//					if (wt.getTable() == null) {
+						break;
+					}
+				}
+				if (i == busboyThreadVector.size()) {
+					// if i get here, i haven't secured a waiter yet
+					busboyAvailable.await();
+				}
+			}
+		} catch(InterruptedException ie) { 
+			System.out.println("WaiterFactory.getWaiter(): IE : " + ie.getMessage());
+		} finally {
+			lock.unlock();
+		}
+		return wt;
+	}
+	
+	
+	
+	
+	private class BusboyThread extends Thread{
+		
+		
+		
+		public BusboyThread(Hostess hostess, int i, BusboyFactory busboyFactory, int numBusboysPerTable) {
+			// TODO Auto-generated constructor stub
+		}
+
+		public void run(){
+//			try {
+//				while (true) {
+//					// busboy can only have one table currently, but multiple busboys can be assigned to one table
+//					
+//				}
+//			} catch (InterruptedException ie) {
+//				System.out.println("BusboyThread.run(): InterruptedException: " + ie.getMessage());
+//			}
+		}
+	}
+	
+	
+}
+
+
