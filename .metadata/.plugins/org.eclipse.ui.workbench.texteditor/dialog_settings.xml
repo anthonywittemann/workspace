@@ -2,37 +2,37 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="@color" key="selection"/>
+		<item value="private" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
-			<item value="@color"/>
-			<item value="interrupted"/>
-			<item value="addWaiterMess"/>
-			<item value="otherLife"/>
-			<item value="myHealth"/>
-			<item value="otherHealthLbl"/>
-			<item value="health"/>
-			<item value="server"/>
+			<item value="private"/>
+			<item value="updateNumMaterialsRemaining"/>
+			<item value="Which material constant"/>
+			<item value="System.out.println"/>
+			<item value="which material constant"/>
+			<item value="currentYLoc = FactoryFrame.MATERIALS_Y "/>
+			<item value="FactoryFrame.MATER"/>
+			<item value="This ain&apos;t"/>
 		</list>
 		<list key="replacehistory">
-			<item value="pw"/>
-			<item value="br"/>
-			<item value="otherHealthLbl"/>
-			<item value="otherLbl"/>
-			<item value="myHealthLbl"/>
-			<item value="myHealth"/>
-			<item value="listenerVector"/>
-			<item value="ListenThread"/>
+			<item value="public"/>
+			<item value="plyers"/>
+			<item value="paintbrushes"/>
+			<item value="screwdrivers"/>
+			<item value="wood"/>
+			<item value="metal"/>
+			<item value="public static Sem"/>
+			<item value="WOOD"/>
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
 		<item value="265" key="DIALOG_WIDTH"/>
 		<item value="1|.Helvetica Neue DeskInterface|11.0|0|COCOA|1|.HelveticaNeueDeskInterface-Regular" key="DIALOG_FONT_NAME"/>
 		<item value="399" key="DIALOG_HEIGHT"/>
-		<item value="165" key="DIALOG_Y_ORIGIN"/>
-		<item value="1084" key="DIALOG_X_ORIGIN"/>
+		<item value="49" key="DIALOG_Y_ORIGIN"/>
+		<item value="1341" key="DIALOG_X_ORIGIN"/>
 	</section>
 </section>

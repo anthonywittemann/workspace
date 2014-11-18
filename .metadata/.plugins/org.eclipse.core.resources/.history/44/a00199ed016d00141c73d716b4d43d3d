@@ -1,0 +1,66 @@
+package aw;
+
+import java.util.ArrayList;
+
+public class Product {
+	public static final short NOT_BUILT = 0;
+	public static final short IN_PROGRESS = 1;
+	public static final short COMPLETE = 2;
+	
+	
+	private String productName;
+	private int numWoodNeeded;
+	private int numMetalNeeded;
+	private int numPlasticNeeded;
+	private ArrayList<UseInstruction> instructions = new ArrayList<UseInstruction>();
+	private short buildStatus;
+	
+	public Product(String productName, int numWoodNeeded, int numMetalNeeded, int numPlasticNeeded, ArrayList<UseInstruction> instructions){
+		this.productName = productName;
+		this.numWoodNeeded = numWoodNeeded;
+		this.numMetalNeeded = numMetalNeeded;
+		this.numPlasticNeeded = numPlasticNeeded;
+		this.instructions = instructions;
+		this.buildStatus = NOT_BUILT;
+	}
+	
+	
+	public int getNumWoodNeeded(){
+		return this.numWoodNeeded;
+	}
+	
+	public int getNumMetalNeeded(){
+		return this.numMetalNeeded;
+	}
+	
+	public int getNumPlasticNeeded(){
+		return this.numPlasticNeeded;
+	}
+	
+	public String getProductName(){
+		return this.productName;
+	}
+	
+	public short getBuildStatus(){
+		return this.buildStatus;
+	}
+	
+	public String getBuildStatusString(){
+		if(this.buildStatus == NOT_BUILT){
+			return "Not Built";
+		}
+		else if(this.buildStatus == IN_PROGRESS){
+			return "In Progress";
+		}
+		else if(this.buildStatus == COMPLETE){
+			return "Complete";
+		}
+		return "BROKEN!!!!";
+	}
+	
+	
+	public void changeBuildStatus(short nBuildStatus){
+		this.buildStatus = nBuildStatus;
+	}
+
+}

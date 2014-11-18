@@ -1,0 +1,13 @@
+package aw;
+
+public class BuildProduct {
+	private String productName;
+	private int numWoodNeeded;
+	private int numMetalNeeded;
+	private int numPlasticNeeded;
+	
+	public BuildProduct(String productName, int numWoodNeeded, int numMetalNeeded, int numPlasticNeeded){
+		
+	}
+
+}

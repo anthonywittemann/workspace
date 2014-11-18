@@ -1,0 +1,30 @@
+package aw;
+
+public class BuildProduct {
+	private String productName;
+	private int numWoodNeeded;
+	private int numMetalNeeded;
+	private int numPlasticNeeded;
+	
+	public BuildProduct(String productName, int numWoodNeeded, int numMetalNeeded, int numPlasticNeeded){
+		this.productName = productName;
+		this.numWoodNeeded = numWoodNeeded;
+		this.numMetalNeeded = numMetalNeeded;
+		this.numPlasticNeeded = numPlasticNeeded;
+		
+	}
+	
+	
+	public int getNumWoodNeeded(){
+		return numWoodNeeded;
+	}
+	
+	public int getNumMetalNeeded(){
+		return numMetalNeeded;
+	}
+	
+	public int getNumPlasticNeeded(){
+		return numPlasticNeeded;
+	}
+
+}

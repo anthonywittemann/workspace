@@ -8,27 +8,27 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.Vector;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.Timer;
 
 /**
  * @author anthonywittemann
@@ -39,21 +39,19 @@ public class FactoryFrame extends JFrame{
 	private JFileChooser fileChooser;
 	private String factoryRCPFileDirectory;
 	private JScrollPane scrollPane;
-	private JTextArea taskBarTA;
+	private static JTextArea taskBarTA;
 	private String taskBarText;
 	private JPanel taskBarPanel; //contains scrollPane, taskbar label
 	private JLabel taskBarLbl;
 	private File factoryFileName;
 	
-	private JPanel drawingPanel;
+	private static JPanel drawingPanel;
+	private static final int TIMER_INTERVAL = 50; //time in milliseconds between each tick
+	private static Timer timer;
+	
+	private static long totalTime = 0;
 	
 	//used to update inventory labels
-	private int[] workers;
-	private int[] hammers;
-	private int[] screwdrivers;
-	private int[] plyers;
-	private int[] scissors;
-	private int[] paintbrushes;
 	//get these values from .factory file
 	private int totalWorkers;
 	private int totalHammers;
@@ -61,12 +59,34 @@ public class FactoryFrame extends JFrame{
 	private int totalPlyers;
 	private int totalScissors;
 	private int totalPaintbrushes;
-	private int numWorkers;
-	private int numHammers;
-	private int numScrewdrivers;
-	private int numPlyers;
-	private int numScissors;
-	private int numPaintbrushes;
+	
+	private static Vector<Worker> workers = new Vector<Worker>();
+	
+	private static int numAvailableWorkers;
+	private static int numAvailableHammers;
+	private static int numAvailableScrewdrivers;
+	private static int numAvailablePlyers;
+	private static int numAvailableScissors;
+	private static int numAvailablePaintbrushes;
+	//implement Semaphores for multiple keys on tools locks
+	public static Semaphore hammersAvailable;
+	public static Semaphore screwdriversAvailable;
+	public static Semaphore plyersAvailable;
+	public static Semaphore scissorsAvailable;
+	public static Semaphore paintbrushesAvailable;
+	
+	
+	//get these from .rcp files
+	private static int numWood = 0;
+	private static int numMetal = 0;
+	private static int numPlastic = 0;
+	public static Semaphore woodAvailable;
+	public static Semaphore metalAvailable;
+	public static Semaphore plasticAvailable;
+	private ArrayList<File> rcpFiles = new ArrayList<File>();
+	
+	private static Vector<Product> products = new Vector<Product>();
+	private static short productKeyCode = 0; //used to identify which worker has the current product
 	
 	public static final int NUM_ANVILS = 2;
 	public static final int NUM_WORKBENCHES = 3;
@@ -74,6 +94,39 @@ public class FactoryFrame extends JFrame{
 	public static final int NUM_TABLESAWS = 3;
 	public static final int NUM_PAINTING_STATIONS = 4;
 	public static final int NUM_PRESSES = 1;
+	
+	//TASKBOARD
+	public static final int TASK_BOARD_X = 600;
+	//MATERIALS
+	public static final int MATERIALS_Y = 30;
+	public static final int WOOD_X = 140;
+	public static final int METAL_X = 280;
+	public static final int PLASTIC_X = 420;
+	//TOOLS
+	public static final int TOOLS_X = 20;
+	public static final int TOOLS_BEGIN_Y = 140;
+	public static final int TOOLS_END_Y = 600;
+	//WORKBENCHES
+	public static final int WORKBENCHES_AND_ANVILS_Y = 150;
+	public static final int ANVIL1_X = 170;
+	public static final int ANVIL2_X = 240;
+	public static final int WORKBENCH1_X = 310;
+	public static final int WORKBENCH2_X = 380;
+	public static final int WORKBENCH3_X = 450;
+	
+	public static final int SAWS_AND_FURNACES_Y = 310;
+	public static final int FURNACE1_X = 170;
+	public static final int FURNACE2_X = 240;
+	public static final int SAW1_X = 310;
+	public static final int SAW2_X = 380;
+	public static final int SAW3_X = 450;
+	
+	public static final int PAITNING_STATIONS_AND_PRESS_Y = 470;
+	public static final int PAINTING_STATION1_X = 170;
+	public static final int PAINTING_STATION2_X = 240;
+	public static final int PAINTING_STATION3_X = 310;
+	public static final int PAINTING_STATION4_X = 380;
+	public static final int PRESS_X = 450;
 	
 	
 	//used for updating the work area labels
@@ -110,6 +163,23 @@ public class FactoryFrame extends JFrame{
 	private int paintingStation4TimeRemaining = 0;
 	private int press1TimeRemaining = 0;
 	
+	//TODO implement Locks for each workstation
+	public static Lock anvil1Lock = new ReentrantLock();
+	public static Lock anvil2Lock = new ReentrantLock();
+	public static Lock workbench1Lock = new ReentrantLock();
+	public static Lock workbench2Lock = new ReentrantLock();
+	public static Lock workbench3Lock = new ReentrantLock();
+	public static Lock furnace1Lock = new ReentrantLock();
+	public static Lock furnace2Lock = new ReentrantLock();
+	public static Lock tablesaw1Lock = new ReentrantLock();
+	public static Lock tablesaw2Lock = new ReentrantLock();
+	public static Lock tablesaw3Lock = new ReentrantLock();
+	public static Lock paintingStation1Lock = new ReentrantLock();
+	public static Lock paintingStation2Lock = new ReentrantLock();
+	public static Lock paintingStation3Lock = new ReentrantLock();
+	public static Lock paintingStation4Lock = new ReentrantLock();
+	public static Lock press1Lock = new ReentrantLock();
+	
 	public FactoryFrame(){
 		super("Factory");
 		setSize(800,600);
@@ -134,10 +204,11 @@ public class FactoryFrame extends JFrame{
 				int returnVal = fileChooser.showOpenDialog(FactoryFrame.this);
 				if(returnVal == JFileChooser.APPROVE_OPTION) {
 					factoryRCPFileDirectory = fileChooser.getSelectedFile().getPath();
-					//TODO add text to TA from file and parse file
+					//add text to TA from file and parse file
 					taskBarText = parseRCPFile(factoryRCPFileDirectory);
 					repaint();
 					taskBarTA.setText(taskBarText);
+					timer.start();
 				}
 			}
 		});
@@ -170,6 +241,60 @@ public class FactoryFrame extends JFrame{
 		add(drawingPanel, BorderLayout.CENTER);
 		
 		setVisible(true);
+		
+		
+		/*** TIMER ***** TIMER ***** TIMER ***** TIMER ***** TIMER ***** TIMER ***** TIMER ***** TIMER ***/
+		timer = new Timer(TIMER_INTERVAL, new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent ae) {
+//				System.out.println("TICK");
+				for(Worker w: workers){
+					w.move();
+				}
+				drawingPanel.repaint();
+				totalTime += TIMER_INTERVAL;
+			}
+		});
+	}
+	
+	//updates the number of materials from worker threads obtaining permits
+	public static void updateNumMaterialsRemaining(int numMaterialsTaken, short material){
+		//increment number taken
+		if(material == Recipe.PLASTIC){
+			numPlastic -= numMaterialsTaken;
+		}
+		else if(material == Recipe.METAL){
+			numMetal -= numMaterialsTaken;
+		}
+		else if(material == Recipe.WOOD){
+			numWood -= numMaterialsTaken;
+		}
+		else{
+			System.out.println("I done fucked up which material constant to use");
+		}
+	}
+	
+	//updates the number of materials from worker threads obtaining permits
+	public static void updateNumToolsRemaining(int numToolsTaken, short tool){
+		//increment number taken
+		if(tool == Recipe.SCISSOR){
+			numAvailableScissors -= numToolsTaken;
+		}
+		else if(tool == Recipe.SCREWDRIVER){
+			numAvailableScrewdrivers -= numToolsTaken;
+		}
+		else if(tool == Recipe.PAINTBRUSH){
+			numAvailablePaintbrushes -= numToolsTaken;
+		}
+		else if(tool == Recipe.HAMMER){
+			numAvailableHammers -= numToolsTaken;
+		}
+		else if(tool == Recipe.PLIER){
+			numAvailablePlyers -= numToolsTaken;
+		}
+		else{
+			System.out.println("I done fucked up which tool constant to use");
+		}
 	}
 	
 	private File findFactoryFileInFolder(final File folder) {
@@ -191,7 +316,26 @@ public class FactoryFrame extends JFrame{
 	    return null;
 	}
 	
-	//also parse .factory file
+	
+	private void findRCPFilesInFolder(final File folder) {
+	    for(final File fileEntry: folder.listFiles()) {
+	        if (fileEntry.isDirectory()) {
+	            findRCPFilesInFolder(fileEntry);
+	        } 
+	        System.out.println(fileEntry.getName());
+	        String extension = "";
+	        int i = fileEntry.getName().lastIndexOf('.');
+	        if (i > 0) {
+	            extension = fileEntry.getName().substring(i+1);
+	        }
+	        if(extension.equalsIgnoreCase("rcp")){
+        		rcpFiles.add(fileEntry);
+        	}
+	        
+	    }
+	}
+	
+	//also parses .factory file
 	public String parseRCPFile(String path) {
 		String ret = ""; //what will go in the text area
 		
@@ -203,7 +347,7 @@ public class FactoryFrame extends JFrame{
 		else{
 			try {
 				Scanner scan = new Scanner(factoryFileName);
-				//TODO parse the .factory file and update num tools
+				// parse the .factory file and update num tools
 				while(scan.hasNext()){
 					String line = scan.nextLine();
 					System.out.println("LINE: " + line);
@@ -233,72 +377,283 @@ public class FactoryFrame extends JFrame{
 					}
 				}
 				
+				
 			} catch (FileNotFoundException e) {
 				System.out.println("FNFE: " + e.getMessage());
 			}
 		}
 		
 		
-		numWorkers = totalWorkers;
-		numHammers = totalHammers;
-		numScrewdrivers = totalScrewdrivers;
-		numPlyers = totalPlyers;
-		numScissors = totalScissors;
-		numPaintbrushes = totalPaintbrushes;
+		numAvailableWorkers = totalWorkers;
+		numAvailableHammers = totalHammers;
+		numAvailableScrewdrivers = totalScrewdrivers;
+		numAvailablePlyers = totalPlyers;
+		numAvailableScissors = totalScissors;
+		numAvailablePaintbrushes = totalPaintbrushes;
 		
-		//TODO add to ret which will be displayed in TA
+		//instantiate arrayList<Worker> and start workers
+		for(int i = 0; i < totalWorkers; i++){
+			workers.add(new Worker());
+		}
 		
+		findRCPFilesInFolder(folder);
+		if(rcpFiles.size() == 0){
+			System.out.println("NO RCP FILES FOUND IN SELECTED DIRECTORY");
+		}
+		else{
+			for(File rcpF: rcpFiles){
+				String productName = "";
+				int numProducts = 0;
+				int numWoodNeeded = 0;
+				int numMetalNeeded = 0;
+				int numPlasticNeeded = 0;
+				int lineNum = 0;
+				ArrayList<Recipe> instructions = new ArrayList<Recipe>();
+				try {
+					//parse fist line for how many things need to be built
+					//parse the .rcp file for [Metal, Wood, Plastic]
+					//parse the .rcp file for [Hammers, Pliers, Screwdrivers, Paintbrushes, Scissors]
+					Scanner scan = new Scanner(rcpF);
+					while(scan.hasNext()){
+						String line = scan.nextLine();
+						//System.out.println("LINE: " + line);
+						
+						if(lineNum == 0){
+							productName += line.substring(line.indexOf('[') + 1, line.indexOf(']'));
+							System.out.println("Product Name: " + productName);
+							if(line.indexOf('x') == -1){
+								numProducts = 1;
+							}
+							else{
+								numProducts = (int) Character.getNumericValue(line.charAt(line.indexOf('x') + 1));
+							}
+						}
+						else{
+							if(line.charAt(1) == 'M'){
+								numMetalNeeded = Integer.parseInt(line.substring(line.indexOf(':') + 1, line.indexOf(']')));
+							}
+							else if(line.charAt(1) == 'W'){
+								numWoodNeeded = Integer.parseInt(line.substring(line.indexOf(':') + 1, line.indexOf(']')));
+							}
+							else if(line.charAt(1) == 'P'){
+								numPlasticNeeded = Integer.parseInt(line.substring(line.indexOf(':') + 1, line.indexOf(']')));
+							}
+							else{
+								line = line.replaceAll("\\s", ""); //get rid of all whitespace
+								short hammers = 0;
+								short screwdrivers = 0;
+								short plyers = 0;
+								short scissors = 0;
+								short paintbrushes = 0;
+								short totalTime = 0;
+								short station = -1;
+								/**
+								 * "and" means there are more than just the first tool listed.
+									"at" gives us a location.
+									"for" gives us a duration of time.
+								 */
+								//parse all the tools being used and # of each
+								String[] tools = line.split("and");
+								for(String t: tools){
+									int xAt = t.indexOf('x');
+									if(xAt != -1){
+										int numTools =  Integer.parseInt(t.substring(xAt - 1, xAt));
+										if(t.charAt(xAt+1) == 'H'){
+											hammers += numTools;
+										}
+										else if(t.charAt(xAt+1) == 'S'){
+											if(t.charAt(xAt+3) == 'i'){
+												scissors += numTools;
+											}
+											else if(t.charAt(xAt+3) == 'r'){
+												screwdrivers += numTools;
+											}
+										}
+										else if(t.charAt(xAt+1) == 'P'){
+											if(t.charAt(xAt+2) == 'a'){
+												paintbrushes += numTools;
+											}
+											else if(t.charAt(xAt+2) == 'l'){
+												plyers += numTools;
+											}
+										}
+									}
+								}
+								
+								//parse the time at workstation
+								String timeStr = line.substring(line.lastIndexOf('r')+1, line.lastIndexOf('s'));
+								totalTime = Short.parseShort(timeStr);
+								
+								//parse which workstation the task is performed at
+								String stationStr = "";
+								int forIndex = line.indexOf("for");
+								//simple case (use saw for 2s)
+								if(line.indexOf("at") == -1){
+									int useEndIndex = line.indexOf("Use") + 3;
+									stationStr = line.substring(useEndIndex, forIndex);
+								}
+								//complex case (use 1x hammer at anvil for 2s)
+								else{
+									int atEndIndex = line.indexOf("at") + 2;
+									stationStr = line.substring(atEndIndex, forIndex);
+								}
+								
+								if(stationStr.equalsIgnoreCase("Anvil")){
+									station = Recipe.ANVIL;
+								}
+								else if(stationStr.equalsIgnoreCase("Workbench")){
+									station = Recipe.WORKBENCH;
+								}
+								else if(stationStr.equalsIgnoreCase("Painting Station") || stationStr.equalsIgnoreCase("PaintingStation")){
+									station = Recipe.PAINTING_STATION;
+								}
+								else if(stationStr.equalsIgnoreCase("Press")){
+									station = Recipe.PRESS;
+								}
+								else if(stationStr.equalsIgnoreCase("Saw")){
+									station = Recipe.SAW;
+								}
+								else if(stationStr.equalsIgnoreCase("Furnace")){
+									station = Recipe.FURNACE;
+								}
+								Recipe rec = new Recipe(hammers, plyers, screwdrivers, paintbrushes, scissors, totalTime, station);
+								instructions.add(rec);
+								System.out.println(rec);
+							}
+						}
+						
+						
+						
+						lineNum++;
+					}
+					numWood += numWoodNeeded;
+					numMetal += numMetalNeeded;
+					numPlastic += numPlasticNeeded;
+					
+					
+					for(int i = 0; i < numProducts; i++){
+						products.add(new Product(productName, numWoodNeeded, numMetalNeeded, numPlasticNeeded, instructions));
+					}
+					
+				} catch (FileNotFoundException e) {
+					System.out.println("FNFE: " + e.getMessage());
+				}
+			}
+		}
 		
+		//add to ret which will be displayed in TA
+		for(Product p: products){
+			ret += p.getProductName() + "... " + p.getBuildStatusString() + "\n";
+		}
 		
+		//TODO create materials semaphores
+		woodAvailable = new Semaphore(numWood, true);
+		metalAvailable = new Semaphore(numMetal, true);
+		plasticAvailable = new Semaphore(numPlastic, true);
 		
-		// TODO PARSE THE RCP FILES
-		/** FOR PARSING
-		 * In the .factory file you will have listed:
-			Workers
-			Hammers
-			Screwdrivers
-			Pliers
-			Scissors
-			Paintbrushes
-
-			For .rcp files, materials will be
-			Metal
-			Plastic
-			Wood
-
-			Tools are:
-			Hammer/Hammers
-			Plier/Pliers
-			Screwdriver/Screwdrivers
-			Paintbrush/Paintbrushes
-			Scissor/Scissors
-
-			Stations are:
-			Saw
-			Press
-			Workbench
-			Painting Station
-			Anvil
-			Press
-		 */
+		//TODO create tools semaphores
+		hammersAvailable = new Semaphore(totalHammers, true);
+		screwdriversAvailable = new Semaphore(totalScrewdrivers, true);
+		plyersAvailable = new Semaphore(totalPlyers, true);
+		scissorsAvailable = new Semaphore(totalScissors, true);
+		paintbrushesAvailable = new Semaphore(totalPaintbrushes, true);
 		
 		return ret;
 	}
 
-
-	public static void main(String[] args) {
-		new FactoryFrame();
-
+	
+	public static Product getTask(){
+		for(Product p: products){
+			if(p.getBuildStatus() == Product.NOT_BUILT){
+				p.changeBuildStatus(Product.IN_PROGRESS);
+				p.setKeyCode(productKeyCode);
+				productKeyCode++;
+				updateTATaskbar();
+				return p;
+			}
+		}
+		return null;
 	}
 	
-	private class DrawingPanel extends JPanel{
+	private static void updateTATaskbar() {
+		String taText = "";
+		for(Product p: products){
+			taText += p.getProductName() + "... " + p.getBuildStatusString() + "\n";
+		}
+		taskBarTA.setText(taText);
+	}
+
+	public static void productFinished(Product finishedProduct){
+		for(Product p: products){
+			if(finishedProduct.getKeyCode() == p.getKeyCode()){
+				p.changeBuildStatus(Product.COMPLETE);
+			}
+		}
+		updateTATaskbar();
+		boolean allDone = true;
+		for(Product p: products){
+			if(p.getBuildStatus() != Product.COMPLETE){
+				allDone = false;
+			}
+		}
+		if(allDone){ 
+			/**
+			 * Once all recipes have been made, remove the workers from the map.
+				Create a pop-up that displays the time the simulation took, 
+				and prompt the user to choose a new directory, or exit the program.
+				If they choose a new directory, the simulation will restart.
+				Otherwise, the program quits. 
+			 */
+			timer.stop();
+			workers.removeAll(workers);
+			drawingPanel.repaint();
+			long totalTimeInSeconds = totalTime/TIMER_INTERVAL;
+			Object[] options = {"New Simulation", "Quit"};
+			int n = JOptionPane.showOptionDialog(null,
+					"The simulation took " + totalTimeInSeconds + " seconds. " +
+							"\nWould you like to start a new simulation or quit?",
+					"Quit or New Simulation",
+					JOptionPane.YES_NO_OPTION,
+					JOptionPane.QUESTION_MESSAGE,
+					null,     //do not use a custom Icon
+					options,  //the titles of buttons
+					options[1]); //default button title
+			if(n == 0){
+				//restart simulation & pick new directory
+				new FactoryFrame();
+			}
+			else{
+				System.exit(0);
+			}
+		}
+	}
+	
+	
+ 	private class DrawingPanel extends JPanel{
 		
 		public void paintComponent(Graphics g){
 			super.paintComponent(g);
 			createMaterialContainers(g);
 			createWorkAreas(g);
+			updateWorkers(g);
 		}
 		
+		
+		private void updateWorkers(Graphics g){
+			//each worker is 40x40
+			for(Worker w: workers){
+				int x = w.getXLocation();
+				int y = w.getYLocation();
+				g.setColor(Color.WHITE);
+				g.fillRect(x, y, 40, 40);
+				g.setColor(Color.BLACK);
+				g.fillRect(x+10, y+5, 14, 14);
+				g.fillRect(x+15, y+19, 4, 14);
+				g.fillRect(x+3, y+22, 28, 6);
+				g.fillRect(x+5, y+32, 10, 5);
+				g.fillRect(x+19, y+32, 10, 5);
+			}
+		}
 		
 		private void createWorkAreas(Graphics g){
 			//each row spaced 70 apart
@@ -642,7 +997,9 @@ public class FactoryFrame extends JFrame{
 			g.drawString("Metal", 276, 25);
 			g.drawString("Plastic", 412, 25);
 			
-			
+			g.drawString("" + numWood, 155, 55);
+			g.drawString("" + numMetal, 295, 55);
+			g.drawString("" + numPlastic, 435, 55);
 			
 
 			// draw 5 black boxes in row with 5 gray smaller ones on top, 
@@ -682,14 +1039,19 @@ public class FactoryFrame extends JFrame{
 			g.drawString("Scissors", 10, 450);
 			
 			//display the number of each tool
-			g.drawString(numScrewdrivers + "/" + totalScrewdrivers, 25, 165);
-			g.drawString(numHammers + "/" + totalHammers, 25, 245);
-			g.drawString(numPaintbrushes + "/" + totalPaintbrushes, 25, 325);
-			g.drawString(numPlyers + "/" + totalPlyers, 25, 405);
-			g.drawString(numScissors + "/" + totalScissors, 25, 485);
+			g.drawString(numAvailableScrewdrivers + "/" + totalScrewdrivers, 25, 165);
+			g.drawString(numAvailableHammers + "/" + totalHammers, 25, 245);
+			g.drawString(numAvailablePaintbrushes + "/" + totalPaintbrushes, 25, 325);
+			g.drawString(numAvailablePlyers + "/" + totalPlyers, 25, 405);
+			g.drawString(numAvailableScissors + "/" + totalScissors, 25, 485);
 		}
 	}
 
+
+	public static void main(String[] args) {
+		new FactoryFrame();
+
+	}
 }
 
 

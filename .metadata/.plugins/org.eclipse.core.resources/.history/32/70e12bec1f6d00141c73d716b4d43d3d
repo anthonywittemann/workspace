@@ -1,0 +1,110 @@
+package aw;
+
+/**
+ * 
+ * @author anthonywittemann
+ *
+ */
+
+public class Recipe {
+	//TOOLS
+	public static final short HAMMER = 0;
+	public static final short PLIER = 1;
+	public static final short SCREWDRIVER = 2;
+	public static final short PAINTBRUSH = 3;
+	public static final short SCISSOR = 4;
+	
+	public boolean usesHammer = false;
+	public boolean usesPlier = false;
+	public boolean usesScrewdriver = false;
+	public boolean usesPaintbrush = false;
+	public boolean usesScissor = false;
+	
+	public short numHammer = 0;
+	public short numPlier = 0;
+	public short numScrewdriver = 0;
+	public short numPaintbrush = 0;
+	public short numScissor = 0;
+	
+	//STATIONS
+	public static final short SAW = 0;
+	public static final short PRESS = 1;
+	public static final short WORKBENCH = 2;
+	public static final short PAINTING_STATION = 3;
+	public static final short ANVIL = 4;
+	public static final short FURNACE = 5;
+	
+	
+	private short totalTime = 0;
+	private short station = -1;
+	
+	public Recipe(short hammers, short pliers, short screwdrivers, short paintbrushes, short scissors, short totalTime, short station){
+		this.numHammer = hammers;
+		this.numPlier = pliers;
+		this.numScrewdriver = screwdrivers;
+		this.numScissor = scissors;
+		this.numPaintbrush = paintbrushes;
+		
+		this.totalTime = totalTime;
+		this.station = station;
+	}
+	
+	
+	
+	
+	public short getNumHammers(){
+		return this.numHammer;
+	}
+	
+	public short getNumPliers(){
+		return this.numPlier;
+	}
+	
+	public short getNumScrewdrivers(){
+		return this.numScrewdriver;
+	}
+	public short getNumPaintbrushes(){
+		return this.numPaintbrush;
+	}
+	public short getNumScissors(){
+		return this.numScissor;
+	}
+	
+	public short getTotalTime(){
+		return this.totalTime;
+	}
+	
+	public short getStation(){
+		return this.station;
+	}
+	
+	public String getStationString(){
+		if(station == SAW){
+			return "saw";
+		}
+		else if(station == PRESS){
+			return "press";
+		}
+		else if(station == WORKBENCH){
+			return "workbench";
+		}
+		else if(station == PAINTING_STATION){
+			return "paintbrush";
+		}
+		else if(station == ANVIL){
+			return "anvil";
+		}
+		else if(station == FURNACE){
+			return "furnace";
+		}
+		return "Shit, dis ain't da right station";
+	}
+	
+	public String toString(){
+		return "# Hammers: " + this.numHammer + "\t# Pliers: " + this.numPlier + 
+				"\t# Screwdrivers: " + this.numScrewdriver + "\t#Paintbrushes: " + this.numPaintbrush + 
+				"\t#Scissors: " + this.numScissor + "\tTotal Time: " + this.totalTime + 
+				"\tStation: " + this.station;
+	}
+
+}

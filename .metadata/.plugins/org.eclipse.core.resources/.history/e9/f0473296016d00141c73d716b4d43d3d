@@ -1,0 +1,36 @@
+package aw;
+
+/**
+ * 
+ * @author anthonywittemann
+ *
+ *
+ *
+ *Tools are:
+Hammer/Hammers
+Plier/Pliers
+Screwdriver/Screwdrivers
+Paintbrush/Paintbrushes
+Scissor/Scissors
+ 
+Stations are:
+Saw
+Press
+Workbench
+Painting Station
+Anvil
+Press
+ */
+
+public class UseInstruction {
+	public static final short HAMMER = 0;
+	public static final short PLIER = 1;
+	public static final short SCREWDRIVER = 2;
+	public static final short PAINTBRUSH = 3;
+	public static final SCISSOR = 4;
+	
+	public UseIntruction(short[] tools, short totalTime, short station){
+		
+	}
+
+}
