@@ -47,7 +47,7 @@ public class Recipe {
 		this.numScissor = scissors;
 		this.numPaintbrush = paintbrushes;
 		
-		this.totalTimeAtStation = totalTime;
+		this.totalTimeAtStation = (short) (totalTime * 1000); //is passed in seconds, needs to be converted to timer ticks
 		this.station = station;
 	}
 	
@@ -138,8 +138,8 @@ public class Recipe {
 	
 	public String toString(){
 		return "# Hammers: " + this.numHammer + "\t# Pliers: " + this.numPlier + 
-				"\t# Screwdrivers: " + this.numScrewdriver + "\t#Paintbrushes: " + this.numPaintbrush + 
-				"\t#Scissors: " + this.numScissor + "\tTotal Time: " + this.totalTimeAtStation + 
+				"\t# Screwdrivers: " + this.numScrewdriver + "\t# Paintbrushes: " + this.numPaintbrush + 
+				"\t# Scissors: " + this.numScissor + "\tTotal Time: " + this.totalTimeAtStation + 
 				"\tStation: " + this.getStationString();
 	}
 

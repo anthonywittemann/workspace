@@ -7,8 +7,8 @@
 	<section name="EditorSelectionDialog">
 	</section>
 	<section name="org.eclipse.ui.internal.QuickAccess">
-		<item value="657" key="dialogHeight"/>
-		<item value="1050" key="dialogWidth"/>
+		<item value="563" key="dialogHeight"/>
+		<item value="900" key="dialogWidth"/>
 		<list key="textEntries">
 		</list>
 		<list key="orderedElements">
@@ -39,8 +39,8 @@
 		</list>
 	</section>
 	<section name="ImportExportAction">
-		<item value="com.android.ide.eclipse.adt.project.ExportWizard" key="ImportExportPage.STORE_SELECTED_EXPORT_WIZARD_ID"/>
-		<item value="org.eclipse.ui.wizards.import.ExternalProject" key="ImportExportPage.STORE_SELECTED_IMPORT_WIZARD_ID"/>
+		<item value="org.eclipse.ui.wizards.export.ZipFile" key="ImportExportPage.STORE_SELECTED_EXPORT_WIZARD_ID"/>
+		<item value="com.android.ide.eclipse.adt.project.ImportProjectWizard" key="ImportExportPage.STORE_SELECTED_IMPORT_WIZARD_ID"/>
 		<list key="ImportExportPage.STORE_EXPANDED_IMPORT_CATEGORIES">
 			<item value="org.eclipse.ui.Basic"/>
 			<item value="com.android.ide.eclipse.wizards.category"/>
@@ -50,6 +50,8 @@
 			<item value="org.eclipse.ui.Basic"/>
 			<item value="com.android.ide.eclipse.wizards.category"/>
 		</list>
+	</section>
+	<section name="ZipFileImportWizard">
 	</section>
 	<section name="FileSystemImportWizard">
 		<item value="false" key="WizardFileSystemResourceImportPage1.STORE_CREATE_CONTAINER_STRUCTURE_ID"/>
@@ -63,11 +65,11 @@
 		<item value="true" key="WizardZipFileResourceExportPage1.STORE_COMPRESS_CONTENTS_ID"/>
 		<item value="true" key="WizardZipFileResourceExportPage1.STORE_CREATE_STRUCTURE_ID"/>
 		<list key="WizardZipFileResourceExportPage1.STORE_DESTINATION_NAMES_ID">
+			<item value="/Users/anthonywittemann/Desktop/awittema_CSCI201_Final.zip"/>
 			<item value="/Users/anthonywittemann/Google Drive/Classes/CSCI 201/Assignment Submissions/awittema_CSCI201_Assignement5a.zip"/>
 			<item value="/Users/anthonywittemann/Google Drive/Classes/CSCI 201/Assignment Submissions/awittema_CSCI201_Lab10.zip"/>
 			<item value="/Users/anthonywittemann/Google Drive/Classes/CSCI 201/awittema_CSCI201_Assignment4.zip"/>
 			<item value="/Users/anthonywittemann/Desktop/awittema_CSCI201_Midterm.zip"/>
-			<item value="/Users/anthonywittemann/Desktop/USC/Classes/CSCI201/awittema_CSCI201_Assignment3.zip"/>
 		</list>
 	</section>
 </section>

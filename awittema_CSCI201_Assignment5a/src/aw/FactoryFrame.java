@@ -46,19 +46,19 @@ public class FactoryFrame extends JFrame{
 	private File factoryFileName;
 	
 	private static JPanel drawingPanel;
-	private static final int TIMER_INTERVAL = 50; //time in milliseconds between each tick
+	public static final int TIMER_INTERVAL = 50; //time in milliseconds between each tick
 	private static Timer timer;
 	
 	private static long totalTime = 0;
 	
 	//used to update inventory labels
 	//get these values from .factory file
-	private int totalWorkers;
-	private int totalHammers;
-	private int totalScrewdrivers;
-	private int totalPlyers;
-	private int totalScissors;
-	private int totalPaintbrushes;
+	private static int totalWorkers;
+	private static int totalHammers;
+	private static int totalScrewdrivers;
+	private static int totalPlyers;
+	private static int totalScissors;
+	private static int totalPaintbrushes;
 	
 	private static Vector<Worker> workers = new Vector<Worker>();
 	
@@ -83,7 +83,7 @@ public class FactoryFrame extends JFrame{
 	public static Semaphore woodAvailable;
 	public static Semaphore metalAvailable;
 	public static Semaphore plasticAvailable;
-	private ArrayList<File> rcpFiles = new ArrayList<File>();
+	private static ArrayList<File> rcpFiles = new ArrayList<File>();
 	
 	private static Vector<Product> products = new Vector<Product>();
 	private static short productKeyCode = 0; //used to identify which worker has the current product
@@ -130,40 +130,40 @@ public class FactoryFrame extends JFrame{
 	
 	
 	//used for updating the work area labels
-	private boolean anvil1Occupied = false;
-	private boolean anvil2Occupied = false;
-	private boolean workbench1Occupied = false;
-	private boolean workbench2Occupied = false;
-	private boolean workbench3Occupied = false;
-	private boolean furnace1Occupied = false;
-	private boolean furnace2Occupied = false;
-	private boolean tablesaw1Occupied = false;
-	private boolean tablesaw2Occupied = false;
-	private boolean tablesaw3Occupied = false;
-	private boolean paintingStation1Occupied = false;
-	private boolean paintingStation2Occupied = false;
-	private boolean paintingStation3Occupied = false;
-	private boolean paintingStation4Occupied = false;
-	private boolean press1Occupied = false;
+	public static boolean anvil1Occupied = false;
+	public static boolean anvil2Occupied = false;
+	public static boolean workbench1Occupied = false;
+	public static boolean workbench2Occupied = false;
+	public static boolean workbench3Occupied = false;
+	public static boolean furnace1Occupied = false;
+	public static boolean furnace2Occupied = false;
+	public static boolean tablesaw1Occupied = false;
+	public static boolean tablesaw2Occupied = false;
+	public static boolean tablesaw3Occupied = false;
+	public static boolean paintingStation1Occupied = false;
+	public static boolean paintingStation2Occupied = false;
+	public static boolean paintingStation3Occupied = false;
+	public static boolean paintingStation4Occupied = false;
+	public static boolean press1Occupied = false;
 	
 	
-	private int anvil1TimeRemaining = 0;
-	private int anvil2TimeRemaining = 0;
-	private int workbench1TimeRemaining = 0;
-	private int workbench2TimeRemaining = 0;
-	private int workbench3TimeRemaining = 0;
-	private int furnace1TimeRemaining = 0;
-	private int furnace2TimeRemaining = 0;
-	private int tablesaw1TimeRemaining = 0;
-	private int tablesaw2TimeRemaining = 0;
-	private int tablesaw3TimeRemaining = 0;
-	private int paintingStation1TimeRemaining = 0;
-	private int paintingStation2TimeRemaining = 0;
-	private int paintingStation3TimeRemaining = 0;
-	private int paintingStation4TimeRemaining = 0;
-	private int press1TimeRemaining = 0;
+	public static int anvil1TimeRemaining = 0;
+	public static int anvil2TimeRemaining = 0;
+	public static int workbench1TimeRemaining = 0;
+	public static int workbench2TimeRemaining = 0;
+	public static int workbench3TimeRemaining = 0;
+	public static int furnace1TimeRemaining = 0;
+	public static int furnace2TimeRemaining = 0;
+	public static int tablesaw1TimeRemaining = 0;
+	public static int tablesaw2TimeRemaining = 0;
+	public static int tablesaw3TimeRemaining = 0;
+	public static int paintingStation1TimeRemaining = 0;
+	public static int paintingStation2TimeRemaining = 0;
+	public static int paintingStation3TimeRemaining = 0;
+	public static int paintingStation4TimeRemaining = 0;
+	public static int press1TimeRemaining = 0;
 	
-	//TODO implement Locks for each workstation
+	//implement Locks for each workstation
 	public static Lock anvil1Lock = new ReentrantLock();
 	public static Lock anvil2Lock = new ReentrantLock();
 	public static Lock workbench1Lock = new ReentrantLock();
@@ -248,8 +248,10 @@ public class FactoryFrame extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent ae) {
 //				System.out.println("TICK");
-				for(Worker w: workers){
-					w.move();
+				if(workers.size() > 0){
+					for(Worker w: workers){
+						w.move();
+					}
 				}
 				drawingPanel.repaint();
 				totalTime += TIMER_INTERVAL;
@@ -546,12 +548,12 @@ public class FactoryFrame extends JFrame{
 			ret += p.getProductName() + "... " + p.getBuildStatusString() + "\n";
 		}
 		
-		//TODO create materials semaphores
+		//create materials semaphores
 		woodAvailable = new Semaphore(numWood, true);
 		metalAvailable = new Semaphore(numMetal, true);
 		plasticAvailable = new Semaphore(numPlastic, true);
 		
-		//TODO create tools semaphores
+		//create tools semaphores
 		hammersAvailable = new Semaphore(totalHammers, true);
 		screwdriversAvailable = new Semaphore(totalScrewdrivers, true);
 		plyersAvailable = new Semaphore(totalPlyers, true);
@@ -590,6 +592,8 @@ public class FactoryFrame extends JFrame{
 			}
 		}
 		updateTATaskbar();
+		
+		//check to see if all tasks are completed
 		boolean allDone = true;
 		for(Product p: products){
 			if(p.getBuildStatus() != Product.COMPLETE){
@@ -607,7 +611,7 @@ public class FactoryFrame extends JFrame{
 			timer.stop();
 			workers.removeAll(workers);
 			drawingPanel.repaint();
-			long totalTimeInSeconds = totalTime/TIMER_INTERVAL;
+			long totalTimeInSeconds = totalTime / 1000;
 			Object[] options = {"New Simulation", "Quit"};
 			int n = JOptionPane.showOptionDialog(null,
 					"The simulation took " + totalTimeInSeconds + " seconds. " +
@@ -619,8 +623,8 @@ public class FactoryFrame extends JFrame{
 					options,  //the titles of buttons
 					options[1]); //default button title
 			if(n == 0){
-				//restart simulation & pick new directory
-				new FactoryFrame();
+				//restart simulation & pick user picks new directory
+				resetAllValues();
 			}
 			else{
 				System.exit(0);
@@ -629,7 +633,31 @@ public class FactoryFrame extends JFrame{
 	}
 	
 	
- 	private class DrawingPanel extends JPanel{
+ 	private static void resetAllValues() {
+		// user opens up filechooser box
+		numWood = 0;
+		numMetal = 0;
+		numPlastic = 0;
+		
+		rcpFiles.removeAll(rcpFiles);
+		products.removeAll(products);
+		workers.removeAll(workers);
+		
+		productKeyCode = 0;
+		
+		totalTime = 0;
+		totalWorkers = 0;
+		totalHammers = 0;
+		totalScissors = 0;
+		totalPaintbrushes = 0;
+		totalPlyers = 0;
+		totalScrewdrivers = 0;
+		
+		taskBarTA.setText("");
+	}
+
+
+	private class DrawingPanel extends JPanel{
 		
 		public void paintComponent(Graphics g){
 			super.paintComponent(g);

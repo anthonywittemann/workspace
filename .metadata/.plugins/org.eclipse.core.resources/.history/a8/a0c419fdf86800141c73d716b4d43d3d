@@ -1,9 +1,0 @@
-
-public class Fibonacci {
-	private int n; //nth Fibonacci number
-
-	public Fibonacci(int n){
-		this.n = n;
-	}
-	
-}
