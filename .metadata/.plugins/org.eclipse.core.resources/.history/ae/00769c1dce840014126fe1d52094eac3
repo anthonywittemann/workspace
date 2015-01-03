@@ -44,12 +44,17 @@ class CookThread extends Thread {
 		cookPanel.addCookMessage( "Cook" + cookNumber + " is ready to cook." );
 		System.out.println("Cook" + cookNumber + " is ready to cook.");
 		
+		
+		//TODO check the vector of uncooked orders to see if there is something to be
+		//cooked. If not, they are to wait between 10 and 20 seconds, before checking the
+		//vector again.
 		if(cookFactory.getOrdersToCook().size() == 0){
 			try {
 				Thread.sleep((long)(10000 * Math.random() + 10000)); //sleep for 10-20 seconds
 			} catch (InterruptedException ie) {
 				System.out.println("CookThread.run(): InterruptedException: " + ie.getMessage());
 			}
+			
 		} else{
 			//get what to cook and remove from cookin vector
 			Order order = null;
@@ -60,6 +65,7 @@ class CookThread extends Thread {
 			} finally{
 				cookinLock.unlock();
 			}
+			
 			//do the cookin
 			try {
 				//print a message to the CookPanel that says: 
@@ -70,12 +76,15 @@ class CookThread extends Thread {
 				System.out.println("Cook " + this.cookNumber + 
 						" is cooking an order for " + order.getOrder() +
 						" for table " + order.getTable().getTableNumber());
-				Thread.sleep((long) (5000 * Math.random() + 5000)); //sleep (cook) for 5-10 seconds
+				//Thread.sleep((long) (5000 * Math.random() + 5000)); //sleep (cook) for 5-10 seconds
+				Thread.sleep((1000 * (int) (Math.random() * 5)));
 			} catch (InterruptedException ie) {
 				System.out.println("CookThread.run(): InterruptedException: " + ie.getMessage());
 			} 
+			
 			//add the completed order to the vector of orders the waiter is to deliver
 			order.getWaiter().addCompletedOrder(order);
+			
 			
 			//The Cook is also to print a message to the CookPanel. 
 			//The message is to say: “Cook X has completed an order for Y for table Z.”

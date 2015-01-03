@@ -11,7 +11,7 @@ public class Order {
 		table = t;
 		waiter = w;
 		
-		System.out.println("Order created " + order + " cust num: " + cn + " table: " + t.getTableNumber() + " waiter: ");
+		System.out.println("Order created" + order + " cust num: " + cn + " table: " + t.getTableNumber() + " waiter: ");
 	}
 	
 	public int getOrder() {
